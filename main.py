@@ -2,7 +2,12 @@
 
 import time
 import serial
-import sys, getopt
+import sys
+import getopt
+from matplotlib import pyplot as plt
+import numpy as np
+import binascii
+
 
 def help():
     print("Start command=================")
@@ -13,21 +18,23 @@ def help():
     print("image")
 
 def main(argv):
+
     try:
         opts, args = getopt.getopt(argv, "hru:", ["port="])
     except getopt.GetoptError:
         help()
         sys.exit(2)
+
     for opt, arg in opts:
         if opt == '-h':
             help()
             sys.exit()
         elif opt in ("-r", "--port"):
-            ##RS232
+            # RS232
             port = "COM" + arg
             baud = 115200
         elif opt in ("-u", "--port"):
-            ##Virtual COM port
+            # Virtual COM port
             port = "COM" + arg
             baud = 921600
 
@@ -37,6 +44,9 @@ def main(argv):
     ser = serial.Serial(port, baud, timeout=1)
     if ser.isOpen():
         print(ser.name + ' is open...')
+
+    # Z5212
+    image = np.empty((1280, 720), np.ubyte)
 
     while True:
         cmd = raw_input("Enter command or 'exit':")
@@ -51,12 +61,21 @@ def main(argv):
             out = ""
             while True:
                 temp = ser.readline()
-                if(len(temp)==0):
-                    break;
+                if len(temp) == 0: ## or temp == '<EOF>':
+                    break
                 out += temp
-            print(out)
+            if cmd == 'image':
+                print(len(out))
+                # print binascii.hexlify(out)
+                # image.data[:] = out
+                # plt.imshow(image)
+                # plt.show()
+            else:
+                print(out)
 
-    print("exit......");
+    print("exit......")
+    ser.close()
+    exit()
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])
