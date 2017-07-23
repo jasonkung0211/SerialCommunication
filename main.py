@@ -18,7 +18,7 @@ def help():
     print("image")
 
 def main(argv):
-
+    firstConn = True
     try:
         opts, args = getopt.getopt(argv, "hru:", ["port="])
     except getopt.GetoptError:
@@ -49,7 +49,10 @@ def main(argv):
     image = np.empty((1280, 720), np.ubyte)
 
     while True:
-        cmd = raw_input("Enter command or 'exit':")
+        if firstConn == False:
+            cmd = raw_input("Enter command or 'exit': \b")
+        else:
+            cmd = 'Hello'
         # for Python 2
         # cmd = input("Enter command or 'exit':")
         # for Python 3
@@ -71,7 +74,10 @@ def main(argv):
                 # plt.imshow(image)
                 # plt.show()
             else:
+                #if(out == '>>>update>>>version>>>light>>>Shutter>>>Gain>>>image>>>quit'):
+                firstConn = False
                 print(out)
+                sys.stdout.flush()
 
     print("exit......")
     ser.close()
