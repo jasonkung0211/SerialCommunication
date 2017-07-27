@@ -1,12 +1,24 @@
 #!/usr/bin/python
 
-import time
+import datetime
 import serial
 import sys
 import getopt
-from matplotlib import pyplot as plt
-import numpy as np
-import binascii
+import os
+
+
+
+
+# def create_opencv_image_from_stringio(img_stream, cv2_img_flag=0):
+#     img_stream.seek(0)
+#     img_array = np.asarray(bytearray(img_stream.read()), dtype=np.uint8)
+#     return cv2.imdecode(img_array, cv2_img_flag)
+
+# def create_opencv_image_from_url(url, cv2_img_flag=0):
+#     request = urlopen(url)
+#     img_array = np.asarray(bytearray(request.read()), dtype=np.uint8)
+#     return cv2.imdecode(img_array, cv2_img_flag)
+
 
 
 def help():
@@ -41,12 +53,9 @@ def main(argv):
     print("baud rate: " + str(baud))
     print("port: " + port)
 
-    ser = serial.Serial(port, baud, timeout=1)
+    ser = serial.Serial(port, baud, timeout=0)
     if ser.isOpen():
         print(ser.name + ' is open...')
-
-    # Z5212
-    image = np.empty((1280, 720), np.ubyte)
 
     while True:
         if firstConn == False:
@@ -59,25 +68,39 @@ def main(argv):
         if cmd == 'exit':
             ser.close()
             exit()
-        else:
+        elif cmd == 'image':
             ser.write(cmd.encode('ascii') + '\r\n')
             out = ""
+            startindex = -1
             while True:
-                temp = ser.readline()
-                if len(temp) == 0: ## or temp == '<EOF>':
+                tmp = ser.readline()
+                if len(tmp) == 0:
+                    continue
+
+                if tmp.find('<<start>>') != -1:
+                    startindex = out.find('<<start>>') + 18
+                    out = tmp[startindex:]
+                    print out
+                    continue
+
+                if tmp.find('<<EOF>>') != -1:
+                    out += tmp[:tmp.find('<<EOF>>')]
                     break
-                out += temp
-            if cmd == 'image':
-                print(len(out))
-                # print binascii.hexlify(out)
-                # image.data[:] = out
-                # plt.imshow(image)
-                # plt.show()
-            else:
-                #if(out == '>>>update>>>version>>>light>>>Shutter>>>Gain>>>image>>>quit'):
-                firstConn = False
-                print(out)
-                sys.stdout.flush()
+
+                if startindex != -1:
+                    out += tmp
+            filename = datetime.datetime.now().strftime("%m-%d_%H-%M-%S")+".jpg"
+            nf = open(filename, "wb")
+            nf.write(bytearray(out))
+            nf.flush()
+            nf.close()
+            os.startfile(filename)
+        else:
+            ser.write(cmd.encode('ascii') + '\r\n')
+            out = ser.readline()
+            print(out)
+            firstConn = False
+            sys.stdout.flush()
 
     print("exit......")
     ser.close()
