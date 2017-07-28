@@ -2,58 +2,58 @@
 
 import datetime
 import serial
-import sys
-import getopt
+import sys, getopt
 import os
+import ConfigParser
 
 
+# version, light, Shutter, Gain, image, quit
+
+def ConfigSectionMap(section):
+    dict1 = {}
+    options = Config.options(section)
+    for option in options:
+        try:
+            dict1[option] = Config.get(section, option)
+            if dict1[option] == -1:
+                print("skip: %s" % option)
+        except:
+            print("exception on %s!" % option)
+            dict1[option] = None
+    return dict1
 
 
-# def create_opencv_image_from_stringio(img_stream, cv2_img_flag=0):
-#     img_stream.seek(0)
-#     img_array = np.asarray(bytearray(img_stream.read()), dtype=np.uint8)
-#     return cv2.imdecode(img_array, cv2_img_flag)
+if __name__ == "__main__":
 
-# def create_opencv_image_from_url(url, cv2_img_flag=0):
-#     request = urlopen(url)
-#     img_array = np.asarray(bytearray(request.read()), dtype=np.uint8)
-#     return cv2.imdecode(img_array, cv2_img_flag)
-
-
-
-def help():
-    print("Start command=================")
-    print 'For RS232 >> main.py -r <port number>'
-    print 'For VCOM >> main.py -u <port number>'
-    print("Control command=================")
-    print("quit")
-    print("image")
-
-def main(argv):
+    baud = ''
+    port = 'COM'
     firstConn = True
-    try:
-        opts, args = getopt.getopt(argv, "hru:", ["port="])
-    except getopt.GetoptError:
-        help()
-        sys.exit(2)
+    Config = ConfigParser.ConfigParser()
+    Config.read(os.getcwd() + '/config.ini')
+    options = Config.options("USB")
 
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "r:u:", ["port=", "port="])
+    except getopt.GetoptError:
+        sys.exit(2)
     for opt, arg in opts:
-        if opt == '-h':
-            help()
-            sys.exit()
-        elif opt in ("-r", "--port"):
-            # RS232
-            port = "COM" + arg
-            baud = 115200
+        if opt in ("-r", "--port"):
+            baud = ConfigSectionMap("RS232")['baud']
+            port = ConfigSectionMap("RS232")['port']
+            options = Config.options("RS232")
         elif opt in ("-u", "--port"):
-            # Virtual COM port
-            port = "COM" + arg
-            baud = 921600
+            baud = ConfigSectionMap("USB")['baud']
+            port = ConfigSectionMap("USB")['port']
+            options = Config.options("USB")
 
     print("baud rate: " + str(baud))
     print("port: " + port)
 
-    ser = serial.Serial(port, baud, timeout=0)
+    # -----
+
+
+
+    ser = serial.Serial(port, baud, timeout=1)
     if ser.isOpen():
         print(ser.name + ' is open...')
 
@@ -80,7 +80,6 @@ def main(argv):
                 if tmp.find('<<start>>') != -1:
                     startindex = out.find('<<start>>') + 18
                     out = tmp[startindex:]
-                    print out
                     continue
 
                 if tmp.find('<<EOF>>') != -1:
@@ -88,8 +87,10 @@ def main(argv):
                     break
 
                 if startindex != -1:
+                    print len(out)
                     out += tmp
-            filename = datetime.datetime.now().strftime("%m-%d_%H-%M-%S")+".jpg"
+            filename = datetime.datetime.now().strftime("%m-%d_%H-%M-%S") + ".jpg"
+            # filename = "pic.jpg"
             nf = open(filename, "wb")
             nf.write(bytearray(out))
             nf.flush()
@@ -105,6 +106,3 @@ def main(argv):
     print("exit......")
     ser.close()
     exit()
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
