@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# -m PyInstaller --onefile
+
 import datetime
 import time
 import serial
@@ -25,6 +27,13 @@ def ConfigSectionMap(section):
 
 
 if __name__ == "__main__":
+    print 'Command:'
+    print 'Show Version >> version'
+    print '燈 >> ON: light1 , OFF: light0'.decode('utf-8')
+    print '快門 >> Shutter<number> , example: Shutter100 (Z5212 0~1000)'.decode('utf-8')
+    print '增益 >> Gain<number> , example: Gain40 (Z5212 Gain 0~63)'.decode('utf-8')
+    print '截圖 >> image'.decode('utf-8')
+    print '離開debug，回復預設值 >> quit\n\n'.decode('utf-8')
 
     baud = ''
     port = 'COM'
@@ -115,18 +124,18 @@ if __name__ == "__main__":
                 firstConn = True
             elif len(out) > 0:
                 print out
-                firstConn = False
-                #------------
-                cmd = 'Shutter' + Shutter
-                ser.write(cmd.encode('ascii') + '\r\n')
-                time.sleep(0.1)
-                out = ser.readline()
-                print out
-                cmd = 'Gain' + Gain
-                ser.write(cmd.encode('ascii') + '\r\n')
-                time.sleep(0.1)
-                out = ser.readline()
-                print out
+                if firstConn:
+                    cmd = 'Shutter' + Shutter
+                    ser.write(cmd.encode('ascii') + '\r\n')
+                    time.sleep(0.3)
+                    out = ser.read_all()
+                    print out
+                    cmd = 'Gain' + Gain
+                    ser.write(cmd.encode('ascii') + '\r\n')
+                    time.sleep(0.3)
+                    out = ser.read_all()
+                    print out
+                    firstConn = False
             sys.stdout.flush()
 
     print("exit......")
