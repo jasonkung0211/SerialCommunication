@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import datetime
+import time
 import serial
 import sys, getopt
 import os
@@ -27,10 +28,12 @@ if __name__ == "__main__":
 
     baud = ''
     port = 'COM'
+    light = 0
+    Shutter = 300
+    Gain = 46
     firstConn = True
     Config = ConfigParser.ConfigParser()
     Config.read(os.getcwd() + '/config.ini')
-    options = Config.options("USB")
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "r:u:", ["port=", "port="])
@@ -40,18 +43,20 @@ if __name__ == "__main__":
         if opt in ("-r", "--port"):
             baud = ConfigSectionMap("RS232")['baud']
             port = ConfigSectionMap("RS232")['port']
-            options = Config.options("RS232")
+            light = ConfigSectionMap("RS232")['light']
+            Shutter = ConfigSectionMap("RS232")['shutter']
+            Gain = ConfigSectionMap("RS232")['gain']
         elif opt in ("-u", "--port"):
             baud = ConfigSectionMap("USB")['baud']
             port = ConfigSectionMap("USB")['port']
-            options = Config.options("USB")
+            light = ConfigSectionMap("USB")['light']
+            Shutter = ConfigSectionMap("USB")['shutter']
+            Gain = ConfigSectionMap("USB")['gain']
 
     print("baud rate: " + str(baud))
     print("port: " + port)
 
     # -----
-
-
 
     ser = serial.Serial(port, baud, timeout=1)
     if ser.isOpen():
@@ -98,9 +103,30 @@ if __name__ == "__main__":
             os.startfile(filename)
         else:
             ser.write(cmd.encode('ascii') + '\r\n')
-            out = ser.readline()
-            print(out)
-            firstConn = False
+            timeout = 6
+            while True:
+                out = ser.readline()
+                if len(out) == 0 and timeout > 0:
+                    timeout -= 1
+                    continue
+                break
+            if timeout == 0:
+                print 'Devices No response.'
+                firstConn = True
+            elif len(out) > 0:
+                print out
+                firstConn = False
+                #------------
+                cmd = 'Shutter' + Shutter
+                ser.write(cmd.encode('ascii') + '\r\n')
+                time.sleep(0.1)
+                out = ser.readline()
+                print out
+                cmd = 'Gain' + Gain
+                ser.write(cmd.encode('ascii') + '\r\n')
+                time.sleep(0.1)
+                out = ser.readline()
+                print out
             sys.stdout.flush()
 
     print("exit......")
