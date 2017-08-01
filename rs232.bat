@@ -1,1 +1,0 @@
-main.exe -r 1

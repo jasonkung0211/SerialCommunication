@@ -1,13 +1,14 @@
 #!/usr/bin/python
 
-# -m PyInstaller --onefile
 
-import datetime
+#### -m PyInstaller --onefile
+
 import time
 import serial
-import sys, getopt
+import sys
 import os
 import ConfigParser
+###from PIL import Image
 
 
 # version, light, Shutter, Gain, image, quit
@@ -27,45 +28,21 @@ def ConfigSectionMap(section):
 
 
 if __name__ == "__main__":
-    print 'Command:'
-    print 'Show Version >> version'
-    print '燈 >> ON: light1 , OFF: light0'.decode('utf-8')
-    print '快門 >> Shutter<number> , example: Shutter100 (Z5212 0~1000)'.decode('utf-8')
-    print '增益 >> Gain<number> , example: Gain40 (Z5212 Gain 0~63)'.decode('utf-8')
-    print '截圖 >> image'.decode('utf-8')
-    print '離開debug，回復預設值 >> quit\n\n'.decode('utf-8')
 
-    baud = ''
-    port = 'COM'
-    light = 0
-    Shutter = 300
-    Gain = 46
     firstConn = True
     Config = ConfigParser.ConfigParser()
     Config.read(os.getcwd() + '/config.ini')
 
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "r:u:", ["port=", "port="])
-    except getopt.GetoptError:
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt in ("-r", "--port"):
-            baud = ConfigSectionMap("RS232")['baud']
-            port = ConfigSectionMap("RS232")['port']
-            light = ConfigSectionMap("RS232")['light']
-            Shutter = ConfigSectionMap("RS232")['shutter']
-            Gain = ConfigSectionMap("RS232")['gain']
-        elif opt in ("-u", "--port"):
-            baud = ConfigSectionMap("USB")['baud']
-            port = ConfigSectionMap("USB")['port']
-            light = ConfigSectionMap("USB")['light']
-            Shutter = ConfigSectionMap("USB")['shutter']
-            Gain = ConfigSectionMap("USB")['gain']
+    baud = ConfigSectionMap("Default")['baud']
+    port = ConfigSectionMap("Default")['port']
+    light = ConfigSectionMap("Default")['light']
+    Shutter = ConfigSectionMap("Default")['shutter']
+    Gain = ConfigSectionMap("Default")['gain']
+
+    isRs232 = baud <= 115200
 
     print("baud rate: " + str(baud))
     print("port: " + port)
-
-    # -----
 
     ser = serial.Serial(port, baud, timeout=1)
     if ser.isOpen():
@@ -74,6 +51,8 @@ if __name__ == "__main__":
     while True:
         if firstConn == False:
             cmd = raw_input("Enter command or 'exit': \b")
+            if cmd == '':
+                cmd = 'image'
         else:
             cmd = 'Hello'
         # for Python 2
@@ -81,13 +60,16 @@ if __name__ == "__main__":
         # for Python 3
         if cmd == 'exit':
             ser.close()
-            exit()
+            exit(0)
         elif cmd == 'image':
             ser.write(cmd.encode('ascii') + '\r\n')
             out = ""
             startindex = -1
             while True:
-                tmp = ser.readline()
+                if not isRs232:
+                    tmp = ser.read(8192)
+                else:
+                    tmp = ser.read(1024)
                 if len(tmp) == 0:
                     continue
 
@@ -101,10 +83,9 @@ if __name__ == "__main__":
                     break
 
                 if startindex != -1:
-                    print len(out)
                     out += tmp
-            filename = datetime.datetime.now().strftime("%m-%d_%H-%M-%S") + ".jpg"
-            # filename = "pic.jpg"
+
+            filename = "Capture.jpg"
             nf = open(filename, "wb")
             nf.write(bytearray(out))
             nf.flush()
@@ -131,6 +112,11 @@ if __name__ == "__main__":
                     out = ser.read_all()
                     print out
                     cmd = 'Gain' + Gain
+                    ser.write(cmd.encode('ascii') + '\r\n')
+                    time.sleep(0.3)
+                    out = ser.read_all()
+                    print out
+                    cmd = 'light' + light
                     ser.write(cmd.encode('ascii') + '\r\n')
                     time.sleep(0.3)
                     out = ser.read_all()
