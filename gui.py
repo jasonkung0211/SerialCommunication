@@ -1,28 +1,32 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
 from ttk import Scrollbar
 
+import sys
+from contextlib import *
 
-class ChatClient(object):
+
+class CoreGUI(object):
     def __init__(self):
         # Styles
-        self.style = MainWindowStyles()
-        self.setup()
-
-    def setup(self):
         self.mw = Tk()
-        self.mw.title("Debug Client @ 2017 ZEBEX, Inc.")
-        resize_and_center(self.mw, 1024, 580)
+        self.style = MainWindowStyles()
+        self.setup(self.mw)
+
+    def setup(self, parent):
+        parent.title("Debug Client @ 2017 ZEBEX, Inc.")
+        resize_and_center(parent, 1024, 580)
 
         # Variables
-        self.modelname = StringVar(self.mw, "Z5212")
-        self.message = StringVar(self.mw, "--disconnect--")
+        self.modelname = StringVar(parent, "Z5212")
+        self.message = StringVar(parent, "--disconnect--")
 
         # Top Frame (name entry box, buttons, conn status)
-        self.login_frame = Frame(self.mw, **self.style.Frame)
-        self.lower_frame = Frame(self.mw, **self.style.Frame)
+        self.login_frame = Frame(parent, **self.style.Frame)
+        self.lower_frame = Frame(parent, **self.style.Frame)
         self.login_frame.pack(side="top", fill="x")
         self.lower_frame.pack(side="top", fill="both", expand=1)
 
@@ -44,22 +48,22 @@ class ChatClient(object):
         ###
 
         self.name_label = Label(self.login_frame,
-            text="Name :",
-            **self.style.Label
-        )
+                                text="Project :",
+                                **self.style.Label
+                                )
         self.name_entry = Entry(self.login_frame,
-            textvariable=self.modelname,
-            width=20,
-            **self.style.DarkEntry
-        )
+                                textvariable=self.modelname,
+                                width=20,
+                                **self.style.DarkEntry
+                                )
         self.enter_exit_button = Button(self.login_frame,
-            text="Enter chat",
-            **self.style.Button
-        )
+                                        text="Enter chat",
+                                        **self.style.Button
+                                        )
         self.status_label = Label(self.login_frame,
-            text="Connected to CyanChat",
-            **self.style.ConnectedLabel
-        )
+                                  text="Connected to CyanChat",
+                                  **self.style.ConnectedLabel
+                                  )
         self.name_label.pack(side="left", padx=5, pady=5)
         self.name_entry.pack(side="left", pady=5)
         self.enter_exit_button.pack(side="left", padx=5, pady=5)
@@ -70,10 +74,10 @@ class ChatClient(object):
         ###
 
         self.message_entry = Entry(self.message_frame,
-            textvariable=self.message,
-            state="disabled",
-            **self.style.Entry
-        )
+                                   textvariable=self.message,
+                                   state="disabled",
+                                   **self.style.Entry
+                                   )
         self.message_entry.pack(
             side="top",
             fill="x",
@@ -86,14 +90,14 @@ class ChatClient(object):
         # Who Frame Widgets
         ###
 
-        self.who_label = Label(self.right_frame,
-            text="Who is online:",
-            anchor="w",
-            **self.style.Label
-        )
-        self.who_label.pack(side="top", fill="x")
+        self.right_label = Label(self.right_frame,
+                                 text="Command:",
+                                 anchor="w",
+                                 **self.style.Label
+                                 )
+        self.right_label.pack(side="top", fill="x")
 
-        self.who_list = Scrolled(self.right_frame, Listbox,
+        """self.who_list = Scrolled(self.right_frame, Listbox,
             attributes=self.style.Listbox,
             scrollbar=self.style.Scrollbar,
         )
@@ -101,15 +105,15 @@ class ChatClient(object):
 
         for i in range(200):
             self.who_list.widget.insert(END, "Anonymous{}".format(i))
-
+        """
         ###
         # Dialogue Frame Widgets
         ###
 
         self.dialogue_text = Scrolled(self.dialogue_frame, Text,
-            attributes=self.style.Dialogue,
-            scrollbar=self.style.Scrollbar,
-        )
+                                      attributes=self.style.Dialogue,
+                                      scrollbar=self.style.Scrollbar,
+                                      )
         self.chat_styles(self.dialogue_text.widget)
         self.dialogue_text.pack(side="top", fill="both", padx=10, pady=0, expand=1)
 
@@ -135,7 +139,7 @@ class ChatClient(object):
             line.reverse()
             for part in line:
                 self.insert_readonly(self.dialogue_text, 0.0, *part)
-        #self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
+                # self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
 
     def chat_styles(self, widget):
         """Configure chat text styles."""
@@ -176,15 +180,15 @@ class MainWindowStyles(object):
         **BaseLabel
     )
 
-    BaseFormCtrl=dict(
-        highlightthickness=0, # Removes stupid border around the widget
+    BaseFormCtrl = dict(
+        highlightthickness=0,  # Removes stupid border around the widget
     )
 
     BaseEntry = dict(
         insertwidth=1,
         selectborderwidth=0,
         selectbackground="#0099FF",
-        font="Verdana 8",
+        font=("Helvetica", 14, "bold"),
         **BaseFormCtrl
     )
     Entry = dict(
@@ -211,8 +215,8 @@ class MainWindowStyles(object):
     Dialogue = dict(
         bg="#000000",
         fg="#CCCCCC",
-        #disabledbackground="#000000",
-        #disabledforeground="#CCCCCC",
+        # disabledbackground="#000000",
+        # disabledforeground="#CCCCCC",
         wrap=tk.WORD,
         state="disabled",
         **BaseEntry
@@ -229,13 +233,13 @@ class MainWindowStyles(object):
     # If using the Tkinter scrollbar, uncommon these. If using the ttk
     # scrollbar, use ttk's theming system instead.
     Scrollbar = dict(
-        #relief="flat",
-        #troughcolor="#000000",
-        #bg="#606060",
-        #activebackground="#999999",
-        #borderwidth=1,
-        #width=12,
-        #highlightthickness=0,
+        # relief="flat",
+        # troughcolor="#000000",
+        # bg="#606060",
+        # activebackground="#999999",
+        # borderwidth=1,
+        # width=12,
+        # highlightthickness=0,
     )
 
 
@@ -260,16 +264,16 @@ class Scrolled(object):
         self.master = master
 
         # Parent frame to hold the widget + scrollbar
-        self.frame  = Frame(master)
+        self.frame = Frame(master)
 
         # The scrollbar
         self.scrollbar = Scrollbar(self.frame, **scrollbar)
 
         # The widget itself
         self.widget = widget_class(self.frame,
-            yscrollcommand=self.scrollbar.set,
-            **attributes
-        )
+                                   yscrollcommand=self.scrollbar.set,
+                                   **attributes
+                                   )
         self.scrollbar.configure(command=self.widget.yview)
 
         self.scrollbar.pack(side="right", fill="y")
@@ -302,5 +306,5 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
-    app = ChatClient()
+    app = CoreGUI()
     app.start()
