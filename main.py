@@ -52,7 +52,7 @@ if __name__ == "__main__":
         if firstConn == False:
             cmd = raw_input("Enter command or 'exit': \b")
             if cmd == '':
-                cmd = 'image'
+                cmd = 'image85'
         else:
             cmd = 'Hello'
         # for Python 2
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         if cmd == 'exit':
             ser.close()
             exit(0)
-        elif cmd == 'image':
+        elif cmd.startswith('image'):
             ser.write(cmd.encode('ascii') + '\r\n')
             out = ""
             startindex = -1
@@ -69,7 +69,7 @@ if __name__ == "__main__":
                 if not isRs232:
                     tmp = ser.read(8192)
                 else:
-                    tmp = ser.read(1024)
+                    tmp = ser.read(4096)
                 if len(tmp) == 0:
                     continue
 
@@ -80,13 +80,15 @@ if __name__ == "__main__":
 
                 if tmp.find('<<EOF>>') != -1:
                     out += tmp[:tmp.find('<<EOF>>')]
+                    print 'OK'
                     break
 
                 if startindex != -1:
                     out += tmp
+                    print len(out)
 
             filename = "Capture.jpg"
-            nf = open(filename, "wb")
+            nf = open(filename, "wb+")
             nf.write(bytearray(out))
             nf.flush()
             nf.close()
