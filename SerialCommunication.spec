@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['C:/Users/jason.kung/PycharmProjects/SerialCommunication/main.py'],
+a = Analysis(['C:/Users/jason.kung/PycharmProjects/SerialCommunication/SerialCommunication.py'],
              pathex=['C:\\Users\\jason.kung\\PycharmProjects\\SerialCommunication'],
              binaries=None,
              datas=None,
@@ -21,7 +21,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='main',
+          name='SerialCommunication',
           debug=False,
           strip=False,
           upx=True,

@@ -1,23 +1,20 @@
 #!/usr/bin/python
-
+# -*- coding: UTF-8 -*-
 
 #### -m PyInstaller --onefile
 
-import time
 import serial
 import sys
 import os
 import ConfigParser
 
 
-# version, light, Shutter, Gain, image, quit
-
 class Config:
     def __init__(self, model):
         if '' == model:
             model = 'Default'
-        Config = ConfigParser.ConfigParser()
-        Config.read(os.getcwd() + '/config.ini')
+        self.config = ConfigParser.ConfigParser()
+        self.config.read(os.getcwd() + '/config.ini')
         self.baud = self.ConfigSectionMap(model)['baud']
         self.port = self.ConfigSectionMap(model)['port']
 
@@ -35,10 +32,10 @@ class Config:
 
     def ConfigSectionMap(self, section):
         dict1 = {}
-        options = c.options(section)
+        options = self.config.options(section)
         for option in options:
             try:
-                dict1[option] = c.get(section, option)
+                dict1[option] = self.config.get(section, option)
                 if dict1[option] == -1:
                     print("skip: %s" % option)
             except:
@@ -51,7 +48,7 @@ class Config:
 
 
 def connect(config):
-    serialer = serial.serial_for_url(config.port, config.baud, timeout=config.timeout, xonxoff=True)
+    serialer = serial.Serial(config.port, config.baud, timeout=int(config.timeout), xonxoff=True)
     # ser = serial.Serial(config.port, config.baud, timeout=config.timeout, xonxoff=True)
     if serialer.isOpen():
         print(serialer.name + ' is open...')
@@ -59,19 +56,6 @@ def connect(config):
         print serialer.name + ' can not open...'
 
     return serialer
-
-
-'''    if ser.is_open:
-        while True:
-            ser.write('Hello'.encode('ascii') + '\r\n')
-            timeoutCount = 5
-            while True:
-                out = ser.readline()
-                if len(out) == 0 and timeoutCount > 0:
-                    timeoutCount -= 1
-                    continue
-                break
-'''
 
 
 def handshake(ser):
@@ -109,14 +93,25 @@ def setLight(level):
     sendComm('light' + str(level))
 
 
+def showVersion():
+    sendComm('version')
+
+
+def setDevicesDefault():
+    sendComm('quit')
+    _exit()
+
+
 def sendComm(command):
     serConnector.write(command.encode('ascii') + '\r\n')
+    timeoutCount = 5
     while True:
         out = serConnector.readline()
-        if len(out) == 0:
+        if len(out) == 0 and timeoutCount > 0:
+            timeoutCount -= 1
             continue
+        print out
         break
-    print out
     sys.stdout.flush()
 
 
@@ -173,10 +168,8 @@ if __name__ == "__main__":
         setDefault(c)
 
     while Has_response:
-        cmd = raw_input("Enter command or 'exit': \b")
-        # for Python 2
-        # cmd = input("Enter command or 'exit':")
-        # for Python 3
+        cmd = raw_input("Enter command or 'exit': \b")        # for Python 3
+        # cmd = input("Enter command or 'exit':")             # for Python 2
         if cmd == 'exit':
             _exit()
         elif cmd == '':

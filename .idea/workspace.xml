@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81a337ad-6c23-49df-9a98-53eae6258a8f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.ini" afterPath="$PROJECT_DIR$/config.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SerialCommunication.py" afterPath="$PROJECT_DIR$/SerialCommunication.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,32 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="165" column="0" lean-forward="false" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
-              <folding>
-                <element signature="e#51#62#0" expanded="true" />
-                <element signature="e#184#1475#0" expanded="false" />
-                <element signature="e#1503#1840#0" expanded="false" />
-                <element signature="e#2206#2518#0" expanded="false" />
-                <element signature="e#2549#2627#0" expanded="false" />
-                <element signature="e#2651#2677#0" expanded="false" />
-                <element signature="e#2708#2741#0" expanded="false" />
-                <element signature="e#2769#2799#0" expanded="false" />
-                <element signature="e#2829#3033#0" expanded="false" />
-                <element signature="e#3063#3878#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gui.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gui.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5436">
-              <caret line="302" column="34" lean-forward="false" selection-start-line="302" selection-start-column="34" selection-end-line="302" selection-end-column="34" />
+            <state relative-caret-position="-3474">
+              <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
               <folding>
                 <element signature="e#47#67#0" expanded="true" />
               </folding>
@@ -92,6 +69,7 @@
         <option value="$PROJECT_DIR$/windows.py" />
         <option value="$PROJECT_DIR$/gui.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/SerialCommunication.py" />
       </list>
     </option>
   </component>
@@ -170,9 +148,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/gui.py" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.GUI">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -307,7 +285,7 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python">
+    <configuration default="false" name="CommandLine" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -319,13 +297,31 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="SerialCommunication" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SerialCommunication.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="Python.main" />
+    <configuration default="false" name="GUI" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Python27\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SerialCommunication" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Python.CommandLine" />
+      <item index="1" class="java.lang.String" itemvalue="Python.GUI" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -362,7 +358,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22341858" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31224763" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -386,21 +382,16 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="29" lean-forward="false" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -415,461 +406,341 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="558">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/command.py" />
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/command.py" />
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/command.py" />
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -892,31 +763,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Capture.jpg" />
     <entry file="file://$PROJECT_DIR$/windows.py" />
-    <entry file="file://$PROJECT_DIR$/gui.py">
+    <entry file="file://C:/Python27/Lib/site-packages/serial/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5436">
-          <caret line="302" column="34" lean-forward="false" selection-start-line="302" selection-start-column="34" selection-end-line="302" selection-end-column="34" />
+        <state relative-caret-position="284">
+          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/serial/serialutil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="170" column="42" lean-forward="false" selection-start-line="170" selection-start-column="35" selection-end-line="170" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="153" column="0" lean-forward="false" selection-start-line="153" selection-start-column="0" selection-end-line="156" selection-end-column="11" />
           <folding>
-            <element signature="e#47#67#0" expanded="true" />
+            <element signature="e#74#87#0" expanded="true" />
+            <element signature="e#149#1470#0" expanded="false" />
+            <element signature="e#1498#1832#0" expanded="false" />
+            <element signature="e#1859#2171#0" expanded="false" />
+            <element signature="e#2897#3712#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://C:/Python27/Lib/site-packages/serial/serialwin32.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="165" column="0" lean-forward="false" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+        <state relative-caret-position="286">
+          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3474">
+          <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
           <folding>
-            <element signature="e#51#62#0" expanded="true" />
-            <element signature="e#184#1475#0" expanded="false" />
-            <element signature="e#1503#1840#0" expanded="false" />
-            <element signature="e#2206#2518#0" expanded="false" />
-            <element signature="e#2549#2627#0" expanded="false" />
-            <element signature="e#2651#2677#0" expanded="false" />
-            <element signature="e#2708#2741#0" expanded="false" />
-            <element signature="e#2769#2799#0" expanded="false" />
-            <element signature="e#2829#3033#0" expanded="false" />
-            <element signature="e#3063#3878#0" expanded="false" />
+            <element signature="e#47#67#0" expanded="true" />
           </folding>
         </state>
       </provider>
