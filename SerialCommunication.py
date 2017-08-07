@@ -110,10 +110,10 @@ def sendComm(command):
         if len(out) == 0 and timeoutCount > 0:
             timeoutCount -= 1
             continue
-        print out
+        return out
         break
     sys.stdout.flush()
-
+    return ''
 
 def getImage(quality):
     if '' == quality:

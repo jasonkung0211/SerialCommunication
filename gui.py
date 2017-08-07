@@ -4,6 +4,7 @@
 import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
 from ttk import Scrollbar
+from PIL import ImageTk, Image
 
 import sys
 from contextlib import *
@@ -11,57 +12,54 @@ from contextlib import *
 
 class CoreGUI(object):
     def __init__(self):
-        # Styles
         self.mw = Tk()
         self.style = MainWindowStyles()
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("Debug Client @ 2017 ZEBEX, Inc.")
-        resize_and_center(parent, 1024, 580)
+        parent.title("Debug Client by 2017 ZEBEX, Inc.")
+        resize_and_center(parent, 1280, 600)
 
         # Variables
         self.modelname = StringVar(parent, "Z5212")
         self.message = StringVar(parent, "--disconnect--")
 
         # Top Frame (name entry box, buttons, conn status)
-        self.login_frame = Frame(parent, **self.style.Frame)
+        self.conn_frame = Frame(parent, **self.style.Frame)
         self.lower_frame = Frame(parent, **self.style.Frame)
-        self.login_frame.pack(side="top", fill="x")
+        self.conn_frame.pack(side="top", fill="x")
         self.lower_frame.pack(side="top", fill="both", expand=1)
 
-        # The lower left (message entry, chat history) and lower right
-        # (who lists)
-        self.left_frame = Frame(self.lower_frame, **self.style.Frame)
-        self.right_frame = Frame(self.lower_frame, **self.style.Frame)
-        self.right_frame.pack(side="right", fill="y")
-        self.left_frame.pack(side="right", fill="both", expand=1)
+        self.image_frame = Frame(self.lower_frame, **self.style.Frame)
+        self.command_frame = Frame(self.lower_frame, **self.style.Frame)
+        self.command_frame.pack(side="right", fill="y")
+        self.image_frame.pack(side="right", fill="both", expand=1)
 
-        # The message entry & chat history frames
-        self.message_frame = Frame(self.left_frame, **self.style.Frame)
-        self.dialogue_frame = Frame(self.left_frame, **self.style.Frame)
+        # The message entry
+        self.message_frame = Frame(self.image_frame, **self.style.Frame)
+        self.display_frame = Frame(self.image_frame, **self.style.Frame)
         self.message_frame.pack(side="top", fill="x")
-        self.dialogue_frame.pack(side="top", fill="both", expand=1)
+        self.display_frame.pack(side="top", fill="both", expand=1)
 
         ###
         # Top Frame Widgets
         ###
 
-        self.name_label = Label(self.login_frame,
+        self.name_label = Label(self.conn_frame,
                                 text="Project :",
                                 **self.style.Label
                                 )
-        self.name_entry = Entry(self.login_frame,
+        self.name_entry = Entry(self.conn_frame,
                                 textvariable=self.modelname,
                                 width=20,
                                 **self.style.DarkEntry
                                 )
-        self.enter_exit_button = Button(self.login_frame,
-                                        text="Enter chat",
+        self.enter_exit_button = Button(self.conn_frame,
+                                        text="Quit",
                                         **self.style.Button
                                         )
-        self.status_label = Label(self.login_frame,
-                                  text="Connected to CyanChat",
+        self.status_label = Label(self.conn_frame,
+                                  # text="Connected",
                                   **self.style.ConnectedLabel
                                   )
         self.name_label.pack(side="left", padx=5, pady=5)
@@ -90,7 +88,7 @@ class CoreGUI(object):
         # Who Frame Widgets
         ###
 
-        self.right_label = Label(self.right_frame,
+        self.right_label = Label(self.command_frame,
                                  text="Command:",
                                  anchor="w",
                                  **self.style.Label
@@ -107,54 +105,21 @@ class CoreGUI(object):
             self.who_list.widget.insert(END, "Anonymous{}".format(i))
         """
         ###
-        # Dialogue Frame Widgets
+        # Display Frame Widgets
         ###
 
-        self.dialogue_text = Scrolled(self.dialogue_frame, Text,
-                                      attributes=self.style.Dialogue,
-                                      scrollbar=self.style.Scrollbar,
-                                      )
-        self.chat_styles(self.dialogue_text.widget)
-        self.dialogue_text.pack(side="top", fill="both", padx=10, pady=0, expand=1)
+        self.display_frame.configure(background='#666666')
 
-        # Dummy junk
-        messages = [
-            [["[Kirsle]", "user"], [" Hello room!"]],
-            [["\\\\\\\\\\", "server"], ["[Kirsle]", "user"], [" <links in from comcast.net Age>"], ["/////", "server"]],
-            [["[ChatServer] ", "server"], ["Welcome to the Cyan Chat room."]],
-            [["[ChatServer] ", "server"], ["There are only a few rules:"]],
-            [["[ChatServer] ", "server"], ["   Be respectful and sensitive to others"]],
-            [["[ChatServer] ", "server"], ["   And HAVE FUN!"]],
-            [["[ChatServer] ", "server"], [""]],
-            [["[ChatServer] ", "server"], ["Termination of use can happen without warning!"]],
-            [["[ChatServer] ", "server"], [""]],
-            [["[ChatServer] ", "server"], ["Server commands now available, type !\\? at the beginning of a line."]],
-            [["[ChatServer] ", "server"], ["CyanChat Server version 2.12d"]],
-        ]
-        for i in range(80):
-            messages.append([["[ChatClient]", "client"], [" Connecting..."]])
-        messages.reverse()
-        for line in messages:
-            self.insert_readonly(self.dialogue_text, 0.0, "\n")
-            line.reverse()
-            for part in line:
-                self.insert_readonly(self.dialogue_text, 0.0, *part)
-                # self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
-
-    def chat_styles(self, widget):
-        """Configure chat text styles."""
-        # User colors
-        widget.tag_configure("user", foreground="#FFFFFF")
-        widget.tag_configure("guest", foreground="#FF9900")
-        widget.tag_configure("admin", foreground="#00FFFF")
-        widget.tag_configure("server", foreground="#00FF00")
-        widget.tag_configure("client", foreground="#FF0000")
-
-    def insert_readonly(self, widget, *args):
-        """Insert text into a readonly (disabled) widget."""
-        widget.widget.configure(state="normal")
-        widget.widget.insert(*args)
-        widget.widget.configure(state="disabled")
+        # Create a canvas
+        canvas = tk.Canvas(self.display_frame, width=1280, height=720)
+        canvas.pack()
+        # Load the image file
+        im = Image.open('Capture.jpg')
+        # Put the image into a canvas compatible class, and stick in an
+        # arbitrary variable to the garbage collector doesn't destroy it
+        canvas.image = ImageTk.PhotoImage(im)
+        # Add the image to the canvas, and set the anchor to the top left / north west corner
+        canvas.create_image(0, 0, image=canvas.image, anchor='nw')
 
     def start(self):
         self.mw.mainloop()
