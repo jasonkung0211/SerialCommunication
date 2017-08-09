@@ -75,57 +75,59 @@ def handshake(ser):
     return len(out) > 0
 
 
-def setDefault(config):
-    setShutter(config.Shutter)
-    setGain(config.Gain)
-    setLight(config.light)
+def setDefault(config, ser):
+    setShutter(config.Shutter, ser)
+    setGain(config.Gain, ser)
+    setLight(config.light, ser)
 
 
-def setGain(ev):
-    sendComm('Gain' + str(ev))
+def setGain(ev, ser):
+    print sendComm('Gain' + str(ev), ser)
 
 
-def setShutter(m_time):
-    sendComm('Shutter' + str(m_time))
+def setShutter(m_time, ser):
+    print sendComm('Shutter' + str(m_time), ser)
 
 
-def setLight(level):
-    sendComm('light' + str(level))
+def setLight(level, ser):
+    print sendComm('light' + str(level), ser)
 
 
-def showVersion():
-    sendComm('version')
+def showVersion(ser):
+    print sendComm('version', ser)
 
 
-def setDevicesDefault():
-    sendComm('quit')
+def setDevicesDefault(ser):
+    sendComm('quit', ser)
     _exit()
 
 
-def sendComm(command):
+def sendComm(command, serConnector):
     serConnector.write(command.encode('ascii') + '\r\n')
+
+    if command == 'quit':
+        return
     timeoutCount = 5
     while True:
         out = serConnector.readline()
         if len(out) == 0 and timeoutCount > 0:
             timeoutCount -= 1
             continue
-        return out
         break
     sys.stdout.flush()
-    return ''
+    return out
 
-def getImage(quality):
+def getImage(quality, serConnector):
     if '' == quality:
         quality = 'image85'
     serConnector.write(quality.encode('ascii') + '\r\n')
     buf = ""
     starting = -1
     while True:
-        if not c.isRs232:
-            tmp = serConnector.read(8192)
-        else:
-            tmp = serConnector.read(8192)
+        ##if not c.isRs232:
+        tmp = serConnector.read(8192)
+        ##else:
+        ##    tmp = serConnector.read(8192)
         if len(tmp) == 0:
             continue
 
@@ -148,7 +150,7 @@ def getImage(quality):
     nf.write(bytearray(buf))
     nf.flush()
     nf.close()
-    os.startfile(filename)
+    #os.startfile(filename)
 
 
 def _exit():
@@ -165,7 +167,7 @@ if __name__ == "__main__":
     Has_response = handshake(serConnector)
 
     if Has_response:
-        setDefault(c)
+        setDefault(c, serConnector)
 
     while Has_response:
         cmd = raw_input("Enter command or 'exit': \b")        # for Python 3
@@ -173,8 +175,9 @@ if __name__ == "__main__":
         if cmd == 'exit':
             _exit()
         elif cmd == '':
-            getImage(cmd)
+            getImage(cmd, serConnector)
+            os.startfile("Capture.jpg")
         else:
-            sendComm(cmd)
+            sendComm(cmd, serConnector)
 
     _exit()

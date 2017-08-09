@@ -1,45 +1,54 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import Tkinter as tk
-from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
-from ttk import Scrollbar
+# import Tkinter as tk
+from Tkinter import  Tk, StringVar, Frame, Label, Entry, Button, Canvas, WORD, IntVar, RIGHT, LEFT
+from ttk import Scrollbar, Radiobutton
 from PIL import ImageTk, Image
+from tkinter import messagebox
 
-import sys
-from contextlib import *
+from SerialCommunication import *
+
+
+class commGUI(object):
+    def callback(self):
+        sendComm(self.name + str(self.value.get()), serConnector)
+
+    def __init__(self, parent, values, name):
+        self.style = MainWindowStyles()
+        self.value = IntVar(0)
+        self.value.set(values)
+        self.name = name
+        _frame = Frame(parent, **self.style.Frame)
+        Button(_frame, text=name, anchor="w", command=self.callback, **self.style.SettingButton).pack(side=LEFT, fill="x")
+        Entry(_frame, width=5, textvariable=str(self.value), **self.style.Entry).pack(side=RIGHT, fill="x")
+        _frame.pack(side="left", padx=5, pady=5)
 
 
 class CoreGUI(object):
     def __init__(self):
         self.mw = Tk()
         self.style = MainWindowStyles()
+        self.quality = IntVar()
         self.setup(self.mw)
 
     def setup(self, parent):
         parent.title("Debug Client by 2017 ZEBEX, Inc.")
-        resize_and_center(parent, 1280, 600)
+        resize_and_center(parent, 1280, 720)
 
         # Variables
         self.modelname = StringVar(parent, "Z5212")
-        self.message = StringVar(parent, "--disconnect--")
 
         # Top Frame (name entry box, buttons, conn status)
         self.conn_frame = Frame(parent, **self.style.Frame)
-        self.lower_frame = Frame(parent, **self.style.Frame)
         self.conn_frame.pack(side="top", fill="x")
+
+        self.lower_frame = Frame(parent, **self.style.Frame)
         self.lower_frame.pack(side="top", fill="both", expand=1)
 
-        self.image_frame = Frame(self.lower_frame, **self.style.Frame)
-        self.command_frame = Frame(self.lower_frame, **self.style.Frame)
-        self.command_frame.pack(side="right", fill="y")
-        self.image_frame.pack(side="right", fill="both", expand=1)
-
         # The message entry
-        self.message_frame = Frame(self.image_frame, **self.style.Frame)
-        self.display_frame = Frame(self.image_frame, **self.style.Frame)
-        self.message_frame.pack(side="top", fill="x")
-        self.display_frame.pack(side="top", fill="both", expand=1)
+        self.display_frame = Frame(self.lower_frame, **self.style.Frame)
+        self.display_frame.pack(side="top", fill="both", expand=1, padx=5, pady=5)
 
         ###
         # Top Frame Widgets
@@ -56,73 +65,73 @@ class CoreGUI(object):
                                 )
         self.enter_exit_button = Button(self.conn_frame,
                                         text="Quit",
+                                        command=self.quit,
                                         **self.style.Button
                                         )
-        self.status_label = Label(self.conn_frame,
-                                  # text="Connected",
-                                  **self.style.ConnectedLabel
-                                  )
         self.name_label.pack(side="left", padx=5, pady=5)
         self.name_entry.pack(side="left", pady=5)
         self.enter_exit_button.pack(side="left", padx=5, pady=5)
-        self.status_label.pack(side="left")
 
         ###
-        # Message Frame Widgets
+        # Image Frame Widgets get image, set quality
         ###
 
-        self.message_entry = Entry(self.message_frame,
-                                   textvariable=self.message,
-                                   state="disabled",
-                                   **self.style.Entry
-                                   )
-        self.message_entry.pack(
-            side="top",
-            fill="x",
-            padx=10,
-            pady=10,
-            expand=1,
-        )
+        self.img_frame = Frame(self.conn_frame, **self.style.Frame)
+        image_q_label = Label(self.img_frame, text='Quality', anchor="w", **self.style.Label)
+        image_q_label.pack(side=LEFT, fill="x")
+        self.quality.set(85)
+        Radiobutton(self.img_frame, text='L', variable=self.quality, value=35, command=self.selected_quality).pack(
+            side=RIGHT, anchor="w")
+        Radiobutton(self.img_frame, text='M', variable=self.quality, value=85, command=self.selected_quality).pack(
+            side=RIGHT, anchor="w")
+        Radiobutton(self.img_frame, text='H', variable=self.quality, value=93, command=self.selected_quality).pack(
+            side=RIGHT, anchor="w")
+        self.img_frame.pack(side="left", padx=5, pady=5)
 
-        ###
-        # Who Frame Widgets
-        ###
+        commGUI(self.conn_frame, c.Gain, "Gain")
+        commGUI(self.conn_frame, c.Shutter, "Shutter")
+        commGUI(self.conn_frame, c.light, "light")
 
-        self.right_label = Label(self.command_frame,
-                                 text="Command:",
-                                 anchor="w",
-                                 **self.style.Label
-                                 )
-        self.right_label.pack(side="top", fill="x")
+        Button(self.conn_frame, text='GET Image', command=self.getimg, **self.style.SettingButton).pack(side="left",
+                                                                                                        padx=5, pady=5)
 
-        """self.who_list = Scrolled(self.right_frame, Listbox,
-            attributes=self.style.Listbox,
-            scrollbar=self.style.Scrollbar,
-        )
-        self.who_list.pack(side="top", fill="both", expand=1)
-
-        for i in range(200):
-            self.who_list.widget.insert(END, "Anonymous{}".format(i))
-        """
         ###
         # Display Frame Widgets
         ###
-
         self.display_frame.configure(background='#666666')
-
         # Create a canvas
-        canvas = tk.Canvas(self.display_frame, width=1280, height=720)
-        canvas.pack()
+        self.canvas = Canvas(self.display_frame, width=1280, height=720)
+        self.loadImage('Capture.jpg')
+
+    def quit(self):
+        sendComm("quit", serConnector)
+        exit(0)
+
+    def getimg(self):
+        self.canvas.delete("all")
+        getImage("image" + str(self.quality.get()), serConnector)
+        self.loadImage('Capture.jpg')
+
+    def loadImage(self, filename):
+        self.canvas.pack()
         # Load the image file
-        im = Image.open('Capture.jpg')
+        try:
+            im = Image.open(filename)
+        except IOError:
+            return
         # Put the image into a canvas compatible class, and stick in an
         # arbitrary variable to the garbage collector doesn't destroy it
-        canvas.image = ImageTk.PhotoImage(im)
+        self.canvas.image = ImageTk.PhotoImage(im)
         # Add the image to the canvas, and set the anchor to the top left / north west corner
-        canvas.create_image(0, 0, image=canvas.image, anchor='nw')
+        self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
 
     def start(self):
         self.mw.mainloop()
+
+    def selected_quality(self):
+        pass
+        # if '' != self.quality.get():
+        #    messagebox.showinfo('Change Image Quality', self.quality.get())
 
 
 class MainWindowStyles(object):
@@ -157,7 +166,7 @@ class MainWindowStyles(object):
         **BaseFormCtrl
     )
     Entry = dict(
-        bg="#FFFF00",
+        bg="#FFFFFF",
         fg="#000000",
         disabledbackground="#000000",
         disabledforeground="#666666",
@@ -182,7 +191,7 @@ class MainWindowStyles(object):
         fg="#CCCCCC",
         # disabledbackground="#000000",
         # disabledforeground="#CCCCCC",
-        wrap=tk.WORD,
+        wrap=WORD,
         state="disabled",
         **BaseEntry
     )
@@ -192,6 +201,13 @@ class MainWindowStyles(object):
         fg="#CCCCCC",
         activebackground="#000000",
         activeforeground="#0099FF",
+        **BaseFormCtrl
+    )
+
+    SettingButton = dict(
+        bg="#666666",
+        fg="#EEFFCC",
+        font=("Helvetica", 11, "bold italic"),
         **BaseFormCtrl
     )
 
@@ -271,5 +287,13 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
+    c = Config('')
+    c.dump()
+    serConnector = connect(c)
+    Has_response = handshake(serConnector)
+
+    if Has_response:
+        setDefault(c, serConnector)
+
     app = CoreGUI()
     app.start()
