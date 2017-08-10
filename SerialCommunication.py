@@ -5,6 +5,7 @@
 
 import serial
 import sys
+import glob
 import os
 import ConfigParser
 
@@ -17,7 +18,6 @@ class Config:
         self.config.read(os.getcwd() + '/config.ini')
         self.baud = self.ConfigSectionMap(model)['baud']
         self.port = self.ConfigSectionMap(model)['port']
-
         self.light = self.ConfigSectionMap(model)['light']
         self.Shutter = self.ConfigSectionMap(model)['shutter']
         self.Gain = self.ConfigSectionMap(model)['gain']
@@ -28,7 +28,7 @@ class Config:
 
         self.timeout = self.ConfigSectionMap(model)['timeout']
 
-        self.isRs232 = self.baud <= 115200
+        self.isRs232 = int(self.baud) - 115200 <= 0
 
     def ConfigSectionMap(self, section):
         dict1 = {}
@@ -48,14 +48,17 @@ class Config:
 
 
 def connect(config):
-    serialer = serial.Serial(config.port, config.baud, timeout=int(config.timeout), xonxoff=True)
-    # ser = serial.Serial(config.port, config.baud, timeout=config.timeout, xonxoff=True)
-    if serialer.isOpen():
-        print(serialer.name + ' is open...')
+    if config.isRs232:
+        ser = serial.Serial(config.port, config.baud, timeout=int(config.timeout))
     else:
-        print serialer.name + ' can not open...'
+        ser = serial.Serial(config.port, config.baud, timeout=int(config.timeout), xonxoff=True)
 
-    return serialer
+    if ser.isOpen():
+        print(ser.name + ' is open...')
+    else:
+        print ser.name + ' can not open...'
+
+    return ser
 
 
 def handshake(ser):
@@ -117,17 +120,17 @@ def sendComm(command, serConnector):
     sys.stdout.flush()
     return out
 
-def getImage(quality, serConnector):
+def getImage(quality, serConnector, rs232):
     if '' == quality:
         quality = 'image85'
     serConnector.write(quality.encode('ascii') + '\r\n')
     buf = ""
     starting = -1
     while True:
-        ##if not c.isRs232:
-        tmp = serConnector.read(8192)
-        ##else:
-        ##    tmp = serConnector.read(8192)
+        if rs232:
+            tmp = serConnector.read(8192)
+        else:
+            tmp = serConnector.read_all()
         if len(tmp) == 0:
             continue
 
@@ -150,7 +153,6 @@ def getImage(quality, serConnector):
     nf.write(bytearray(buf))
     nf.flush()
     nf.close()
-    #os.startfile(filename)
 
 
 def _exit():
@@ -159,8 +161,75 @@ def _exit():
     exit(0)
 
 
+def serial_ports():
+    """ Lists serial port names
+
+        :raises EnvironmentError:
+            On unsupported or unknown platforms
+        :returns:
+            A list of the serial ports available on the system
+    """
+    if sys.platform.startswith('win'):
+        ports = ['COM%s' % (i + 1) for i in range(256)]
+    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+        # this excludes your current terminal "/dev/tty"
+        ports = glob.glob('/dev/tty[A-Za-z]*')
+    elif sys.platform.startswith('darwin'):
+        ports = glob.glob('/dev/tty.*')
+    else:
+        raise EnvironmentError('Unsupported platform')
+
+    result = []
+    for port in ports:
+        try:
+            s = serial.Serial(port)
+            s.close()
+            result.append(port)
+        except (OSError, serial.SerialException):
+            pass
+    return result
+
+
+def serial_devices_name(_ports):
+    for port in _ports:
+        try:
+            s = serial.Serial(port, 115200, timeout=1)
+            s.write(bytes('AT+CGMI' + '\r\n'))
+            response = s.read(100)
+            if response.startswith('update, version, light, Shutter, Gain, image, q'):
+                s.close()
+                return port
+            s.close()
+        except (OSError, serial.SerialException):
+            pass
+    return ''
+
+
+def serial_baud(_port):
+    s = _port[3:len(_port)]
+    try:
+        number = int(s)
+    except ValueError:
+        return -1
+    if number > 3:
+        return 921600
+    else:
+        return 115200
+
+
 if __name__ == "__main__":
+    ports = serial_ports()
+    s_port = serial_devices_name(ports)
+    s_baud = serial_baud(s_port)
+
+    if s_baud == -1:
+        print s_port
+        exit(0)
+
     c = Config('')
+    c.baud = s_baud
+    c.port = s_port
+    c.isRs232 = int(c.baud) - 115200 <= 0
     c.dump()
     serConnector = connect(c)
 
@@ -175,7 +244,7 @@ if __name__ == "__main__":
         if cmd == 'exit':
             _exit()
         elif cmd == '':
-            getImage(cmd, serConnector)
+            getImage(cmd, serConnector, c.isRs232)
             os.startfile("Capture.jpg")
         else:
             sendComm(cmd, serConnector)

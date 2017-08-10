@@ -15,6 +15,7 @@ class commGUI(object):
         sendComm(self.name + str(self.value.get()), serConnector)
 
     def __init__(self, parent, values, name):
+        # state = "disabled"
         self.style = MainWindowStyles()
         self.value = IntVar(0)
         self.value.set(values)
@@ -33,7 +34,7 @@ class CoreGUI(object):
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("Debug Client by 2017 ZEBEX, Inc.")
+        parent.title("JDebug Client by 2017 ZEBEX, Inc.")
         resize_and_center(parent, 1280, 720)
 
         # Variables
@@ -60,7 +61,7 @@ class CoreGUI(object):
                                 )
         self.name_entry = Entry(self.conn_frame,
                                 textvariable=self.modelname,
-                                width=20,
+                                width=8,
                                 **self.style.DarkEntry
                                 )
         self.enter_exit_button = Button(self.conn_frame,
@@ -80,12 +81,10 @@ class CoreGUI(object):
         image_q_label = Label(self.img_frame, text='Quality', anchor="w", **self.style.Label)
         image_q_label.pack(side=LEFT, fill="x")
         self.quality.set(85)
-        Radiobutton(self.img_frame, text='L', variable=self.quality, value=35, command=self.selected_quality).pack(
-            side=RIGHT, anchor="w")
-        Radiobutton(self.img_frame, text='M', variable=self.quality, value=85, command=self.selected_quality).pack(
-            side=RIGHT, anchor="w")
-        Radiobutton(self.img_frame, text='H', variable=self.quality, value=93, command=self.selected_quality).pack(
-            side=RIGHT, anchor="w")
+        Radiobutton(self.img_frame, text='L', variable=self.quality, value=35, command=self.selected_quality).pack(side=RIGHT, anchor="w")
+        Radiobutton(self.img_frame, text='M', variable=self.quality, value=85, command=self.selected_quality).pack(side=RIGHT, anchor="w")
+        Radiobutton(self.img_frame, text='H', variable=self.quality, value=93, command=self.selected_quality).pack(side=RIGHT, anchor="w")
+
         self.img_frame.pack(side="left", padx=5, pady=5)
 
         commGUI(self.conn_frame, c.Gain, "Gain")
@@ -100,16 +99,17 @@ class CoreGUI(object):
         ###
         self.display_frame.configure(background='#666666')
         # Create a canvas
-        self.canvas = Canvas(self.display_frame, width=1280, height=720)
+        self.canvas = Canvas(self.display_frame, width=1280, height=720, bg="#666666")
         self.loadImage('Capture.jpg')
 
     def quit(self):
         sendComm("quit", serConnector)
-        exit(0)
+        app.quit()
+        app.destroy()
 
     def getimg(self):
         self.canvas.delete("all")
-        getImage("image" + str(self.quality.get()), serConnector)
+        getImage("image" + str(self.quality.get()), serConnector, c.isRs232)
         self.loadImage('Capture.jpg')
 
     def loadImage(self, filename):
@@ -287,13 +287,27 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
+    ports = serial_ports()
+    s_port = serial_devices_name(ports)
+    s_baud = serial_baud(s_port)
+
+    if s_baud == -1:
+        print s_port
+        exit(0)
+
     c = Config('')
+    c.baud = s_baud
+    c.port = s_port
+    c.isRs232 = int(c.baud) - 115200 <= 0
     c.dump()
     serConnector = connect(c)
+
     Has_response = handshake(serConnector)
 
     if Has_response:
         setDefault(c, serConnector)
+    else:
+        exit(1)
 
     app = CoreGUI()
     app.start()
