@@ -287,18 +287,18 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
-    ports = serial_ports()
-    s_port = serial_devices_name(ports)
-    s_baud = serial_baud(s_port)
+    # ports = serial_ports()
+    # s_port = serial_devices_name(ports)
+    # s_baud = serial_baud(s_port)
 
-    if s_baud == -1:
-        print s_port
-        exit(0)
+    # if s_baud == -1:
+    #     print s_port
+    #     exit(0)
 
     c = Config('')
-    c.baud = s_baud
-    c.port = s_port
-    c.isRs232 = int(c.baud) - 115200 <= 0
+    # c.baud = s_baud
+    # c.port = s_port
+    # c.isRs232 = int(c.baud) - 115200 <= 0
     c.dump()
     serConnector = connect(c)
 
