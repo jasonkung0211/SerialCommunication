@@ -54,6 +54,9 @@ def connect(config):
         ser = serial.Serial(config.port, config.baud, timeout=int(config.timeout), xonxoff=True)
 
     if ser.isOpen():
+        ser.flushInput()  # flush input buffer, discarding all its contents
+        ser.flushOutput()  # flush output buffer, aborting current output
+        # and discard all that is in buffer
         print(ser.name + ' is open...')
     else:
         print ser.name + ' can not open...'
@@ -105,14 +108,14 @@ def setDevicesDefault(ser):
     _exit()
 
 
-def sendComm(command, serConnector):
-    serConnector.write(command.encode('ascii') + '\r\n')
+def sendComm(command, ser):
+    ser.write(command.encode('ascii') + '\r\n')
 
     if command == 'quit':
         return
     timeoutCount = 5
     while True:
-        out = serConnector.readline()
+        out = ser.readline()
         if len(out) == 0 and timeoutCount > 0:
             timeoutCount -= 1
             continue
@@ -120,22 +123,23 @@ def sendComm(command, serConnector):
     sys.stdout.flush()
     return out
 
-def getImage(quality, serConnector, rs232):
+
+def getImage(quality, ser, rs232):
     if '' == quality:
         quality = 'image85'
-    serConnector.write(quality.encode('ascii') + '\r\n')
+    ser.write(quality.encode('ascii') + '\r\n')
     buf = ""
     starting = -1
     while True:
         if rs232:
-            tmp = serConnector.read(8192)
+            tmp = ser.read(8192)
         else:
-            tmp = serConnector.read_all()
+            tmp = ser.read_all()
         if len(tmp) == 0:
             continue
 
         if tmp.find('<<start>>') != -1:
-            starting = buf.find('<<start>>') + 18
+            starting = buf.find('<<start>>') + 9
             buf = tmp[starting:]
             continue
 
@@ -149,7 +153,7 @@ def getImage(quality, serConnector, rs232):
             print len(buf)
 
     filename = "Capture.jpg"
-    nf = open(filename, "wb+")
+    nf = open(filename, "wb")
     nf.write(bytearray(buf))
     nf.flush()
     nf.close()
@@ -195,7 +199,7 @@ def serial_devices_name(_ports):
         try:
             s = serial.Serial(port, 115200, timeout=1)
             s.write(bytes('AT+CGMI' + '\r\n'))
-            response = s.read(100)
+            response = s.read_all()
             if response.startswith('update, version, light, Shutter, Gain, image, q'):
                 s.close()
                 return port
@@ -218,18 +222,18 @@ def serial_baud(_port):
 
 
 if __name__ == "__main__":
-    ports = serial_ports()
-    s_port = serial_devices_name(ports)
-    s_baud = serial_baud(s_port)
+    #ports = serial_ports()
+    #s_port = serial_devices_name(ports)
+    #s_baud = serial_baud(s_port)
 
-    if s_baud == -1:
-        print s_port
-        exit(0)
+    #if s_baud == -1:
+    #    print s_port
+    #    exit(0)
 
     c = Config('')
-    c.baud = s_baud
-    c.port = s_port
-    c.isRs232 = int(c.baud) - 115200 <= 0
+    #c.baud = s_baud
+    #c.port = s_port
+    #c.isRs232 = int(c.baud) - 115200 <= 0
     c.dump()
     serConnector = connect(c)
 

@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 # import Tkinter as tk
-from Tkinter import  Tk, StringVar, Frame, Label, Entry, Button, Canvas, WORD, IntVar, RIGHT, LEFT
+from Tkinter import Tk, StringVar, Frame, Label, Entry, Button, Canvas, WORD, IntVar, RIGHT, LEFT
 from ttk import Scrollbar, Radiobutton
+
 from PIL import ImageTk, Image
-from tkinter import messagebox
 
 from SerialCommunication import *
 
