@@ -105,7 +105,6 @@ def showVersion(ser):
 
 def setDevicesDefault(ser):
     sendComm('quit', ser)
-    _exit()
 
 
 def sendComm(command, ser):
@@ -139,7 +138,10 @@ def getImage(quality, ser, rs232):
             continue
 
         if tmp.find('<<start>>') != -1:
-            starting = buf.find('<<start>>') + 9
+            if rs232:
+                starting = buf.find('<<start>>') + 10
+            else:
+                starting = buf.find('<<start>>') + 18
             buf = tmp[starting:]
             continue
 
@@ -153,16 +155,10 @@ def getImage(quality, ser, rs232):
             print len(buf)
 
     filename = "Capture.jpg"
-    nf = open(filename, "wb")
+    nf = open(filename, "wb+")
     nf.write(bytearray(buf))
     nf.flush()
     nf.close()
-
-
-def _exit():
-    print("exit......")
-    serConnector.close()
-    exit(0)
 
 
 def serial_ports():
@@ -246,11 +242,13 @@ if __name__ == "__main__":
         cmd = raw_input("Enter command or 'exit': \b")        # for Python 3
         # cmd = input("Enter command or 'exit':")             # for Python 2
         if cmd == 'exit':
-            _exit()
+            break
         elif cmd == '':
             getImage(cmd, serConnector, c.isRs232)
             os.startfile("Capture.jpg")
         else:
             sendComm(cmd, serConnector)
 
-    _exit()
+    print("exit......")
+    serConnector.close()
+    exit(0)

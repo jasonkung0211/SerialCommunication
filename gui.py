@@ -34,7 +34,7 @@ class CoreGUI(object):
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("JDebug Client by 2017 ZEBEX, Inc.")
+        parent.title("JDebug Client by 2017 ZEBEX, Inc. Version 1.1")
         resize_and_center(parent, 1280, 720)
 
         # Variables
@@ -118,6 +118,7 @@ class CoreGUI(object):
         try:
             im = Image.open(filename)
         except IOError:
+            print 'IOError'
             return
         # Put the image into a canvas compatible class, and stick in an
         # arbitrary variable to the garbage collector doesn't destroy it
@@ -306,8 +307,8 @@ if __name__ == "__main__":
 
     if Has_response:
         setDefault(c, serConnector)
-    else:
-        exit(1)
+        app = CoreGUI()
+        app.start()
 
-    app = CoreGUI()
-    app.start()
+
+
