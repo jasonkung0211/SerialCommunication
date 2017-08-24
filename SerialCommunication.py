@@ -154,6 +154,8 @@ def getImage(quality, ser, rs232):
             buf += tmp
             print len(buf)
 
+    ser.flushInput()
+    ser.flushOutput()
     filename = "Capture.jpg"
     nf = open(filename, "wb+")
     nf.write(bytearray(buf))

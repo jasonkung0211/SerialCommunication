@@ -3,7 +3,7 @@
 
 # import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Entry, Button, Canvas, WORD, IntVar, RIGHT, LEFT
-from ttk import Scrollbar, Radiobutton
+from ttk import Scrollbar, Radiobutton, Combobox
 
 from PIL import ImageTk, Image
 
@@ -12,14 +12,15 @@ from SerialCommunication import *
 
 class commGUI(object):
     def callback(self):
-        sendComm(self.name + str(self.value.get()), serConnector)
+        sendComm(self.name + str(self.value.get()), self.conn)
 
-    def __init__(self, parent, values, name):
+    def __init__(self, parent, values, connt, name):
         # state = "disabled"
         self.style = MainWindowStyles()
         self.value = IntVar(0)
         self.value.set(values)
         self.name = name
+        self.conn = connt
         _frame = Frame(parent, **self.style.Frame)
         Button(_frame, text=name, anchor="w", command=self.callback, **self.style.SettingButton).pack(side=LEFT, fill="x")
         Entry(_frame, width=5, textvariable=str(self.value), **self.style.Entry).pack(side=RIGHT, fill="x")
@@ -34,11 +35,11 @@ class CoreGUI(object):
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("JDebug Client by 2017 ZEBEX, Inc. Version 1.1")
-        resize_and_center(parent, 1280, 720)
+        parent.title("Z5212 Debug Client by 2017 ZEBEX, Inc. Version 1.1")
+        resize_and_center(parent, 900, 480)
 
-        # Variables
-        self.modelname = StringVar(parent, "Z5212")
+        self.conn_status = StringVar()
+        self.conn_status.set('...')
 
         # Top Frame (name entry box, buttons, conn status)
         self.conn_frame = Frame(parent, **self.style.Frame)
@@ -51,26 +52,34 @@ class CoreGUI(object):
         self.display_frame = Frame(self.lower_frame, **self.style.Frame)
         self.display_frame.pack(side="top", fill="both", expand=1, padx=5, pady=5)
 
+        self.right_frame = Frame(self.lower_frame, **self.style.Frame)
+        self.right_frame.pack(side="right", fill="y")
+
         ###
         # Top Frame Widgets
         ###
-
         self.name_label = Label(self.conn_frame,
-                                text="Project :",
+                                textvariable=self.conn_status,
                                 **self.style.Label
-                                )
-        self.name_entry = Entry(self.conn_frame,
-                                textvariable=self.modelname,
-                                width=8,
-                                **self.style.DarkEntry
-                                )
+                               ).pack(side="left", padx=5, pady=5)
+
+        Button(self.conn_frame, text='連線', command=self.conn, **self.style.SettingButton).pack(side="left",
+                                                                                                        padx=5, pady=5)
+        self.ports_Combobox = Combobox(self.conn_frame, values=serial_ports(), width=8)
+        # assign function to combobox
+        self.ports_Combobox.bind('<<ComboboxSelected>>', self.port_on_select)
+
+        self.baud_rate_Combo = Combobox(self.conn_frame, values=[115200, 921600], width=8)
+        self.baud_rate_Combo.bind('<<ComboboxSelected>>', self.baud_rate_on_select)
+
         self.enter_exit_button = Button(self.conn_frame,
-                                        text="Quit",
+                                        text="回復預設值",
                                         command=self.quit,
                                         **self.style.Button
                                         )
-        self.name_label.pack(side="left", padx=5, pady=5)
-        self.name_entry.pack(side="left", pady=5)
+
+        self.ports_Combobox.pack(side="left", padx=5, pady=5)
+        self.baud_rate_Combo.pack(side="left", padx=5, pady=5)
         self.enter_exit_button.pack(side="left", padx=5, pady=5)
 
         ###
@@ -87,11 +96,7 @@ class CoreGUI(object):
 
         self.img_frame.pack(side="left", padx=5, pady=5)
 
-        commGUI(self.conn_frame, c.Gain, "Gain")
-        commGUI(self.conn_frame, c.Shutter, "Shutter")
-        commGUI(self.conn_frame, c.light, "light")
-
-        Button(self.conn_frame, text='GET Image', command=self.getimg, **self.style.SettingButton).pack(side="left",
+        Button(self.conn_frame, text='拍照', command=self.getimg, **self.style.SettingButton).pack(side="left",
                                                                                                         padx=5, pady=5)
 
         ###
@@ -99,21 +104,43 @@ class CoreGUI(object):
         ###
         self.display_frame.configure(background='#666666')
         # Create a canvas
-        self.canvas = Canvas(self.display_frame, width=1280, height=720, bg="#666666")
+        self.canvas = Canvas(self.display_frame, width=640, height=360, bg="#666666")
         self.loadImage('Capture.jpg')
 
+    def conn(self):
+        self.conn_status.set("...")
+        c = Config('')
+        c.baud = self.baud_rate_Combo.get()
+        c.port = self.ports_Combobox.get()
+        c.isRs232 = int(c.baud) - 115200 <= 0
+        c.dump()
+        self.serConnector = connect(c)
+        serConnector = self.serConnector
+        Has_response = handshake(self.serConnector)
+        if Has_response:
+            setDefault(c, self.serConnector)
+            self.conn_status.set('連線中')
+            commGUI(self.right_frame, c.Gain, self.serConnector, "Gain")
+            commGUI(self.right_frame, c.Shutter, self.serConnector, "Shutter")
+            commGUI(self.right_frame, c.light, self.serConnector, "light")
+
+
+
+    def baud_rate_on_select(self, event=None):
+        print("event.widget:", event.widget.get())
+
+    def port_on_select(self, event=None):
+        print("event.widget:", event.widget.get())
+
     def quit(self):
-        sendComm("quit", serConnector)
-        app.quit()
-        app.destroy()
+        self.serConnector.write("quit".encode('ascii') + '\r\n')
 
     def getimg(self):
         self.canvas.delete("all")
-        getImage("image" + str(self.quality.get()), serConnector, c.isRs232)
+        getImage("image" + str(self.quality.get()), self.serConnector, c.isRs232)
         self.loadImage('Capture.jpg')
 
     def loadImage(self, filename):
-        self.canvas.pack()
         # Load the image file
         try:
             im = Image.open(filename)
@@ -125,6 +152,7 @@ class CoreGUI(object):
         self.canvas.image = ImageTk.PhotoImage(im)
         # Add the image to the canvas, and set the anchor to the top left / north west corner
         self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
+        self.canvas.pack()
 
     def start(self):
         self.mw.mainloop()
@@ -288,27 +316,17 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
-    # ports = serial_ports()
-    # s_port = serial_devices_name(ports)
-    # s_baud = serial_baud(s_port)
-
-    # if s_baud == -1:
-    #     print s_port
-    #     exit(0)
-
     c = Config('')
-    # c.baud = s_baud
-    # c.port = s_port
     # c.isRs232 = int(c.baud) - 115200 <= 0
-    c.dump()
-    serConnector = connect(c)
+    # c.dump()
+    serConnector = None
 
-    Has_response = handshake(serConnector)
+    # Has_response = handshake(serConnector)
 
-    if Has_response:
-        setDefault(c, serConnector)
-        app = CoreGUI()
-        app.start()
+    # if Has_response:
+    #     setDefault(c, serConnector)
+    app = CoreGUI()
+    app.start()
 
 
 

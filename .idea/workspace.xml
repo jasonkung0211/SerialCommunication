@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81a337ad-6c23-49df-9a98-53eae6258a8f" name="Default" comment="" />
+    <list default="true" id="81a337ad-6c23-49df-9a98-53eae6258a8f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gui.py" afterPath="$PROJECT_DIR$/gui.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +23,8 @@
       <file leaf-file-name="SerialCommunication.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-324">
-              <caret line="164" column="31" lean-forward="true" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="31" />
+            <state relative-caret-position="197">
+              <caret line="110" column="46" lean-forward="false" selection-start-line="110" selection-start-column="14" selection-end-line="110" selection-end-column="46" />
               <folding>
                 <element signature="e#74#87#0" expanded="true" />
               </folding>
@@ -30,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build_gui.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build_gui.py">
+      <file leaf-file-name="serialwin32.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python27/Lib/site-packages/serial/serialwin32.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <state relative-caret-position="179">
+              <caret line="311" column="0" lean-forward="false" selection-start-line="311" selection-start-column="0" selection-end-line="311" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -43,24 +45,14 @@
       <file leaf-file-name="gui.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="131" column="0" lean-forward="false" selection-start-line="131" selection-start-column="0" selection-end-line="134" selection-end-column="76" />
+            <state relative-caret-position="133">
+              <caret line="135" column="64" lean-forward="true" selection-start-line="135" selection-start-column="64" selection-end-line="135" selection-end-column="64" />
               <folding>
                 <element signature="e#70#167#0" expanded="true" />
-                <element signature="e#5276#7276#0" expanded="false" />
-                <element signature="e#7307#8937#0" expanded="false" />
-                <element signature="e#8987#9286#0" expanded="false" />
+                <element signature="e#6603#8603#0" expanded="false" />
+                <element signature="e#8634#10264#0" expanded="false" />
+                <element signature="e#10314#10613#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.ini" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.ini">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -84,7 +76,6 @@
       <find>MainWindowStyles</find>
       <find>ChatClient</find>
       <find>self.mwparentparent</find>
-      <find>modelname</find>
       <find>login_frame</find>
       <find>lower_frame</find>
       <find>dialogue_frame</find>
@@ -101,6 +92,10 @@
       <find>getImage</find>
       <find>_exit</find>
       <find>getimg</find>
+      <find>serial_devices_name</find>
+      <find>modelname</find>
+      <find>connect</find>
+      <find>serConnector</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -114,10 +109,10 @@
         <option value="$PROJECT_DIR$/mainWindows.py" />
         <option value="$PROJECT_DIR$/windows.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/build_gui.py" />
-        <option value="$PROJECT_DIR$/gui.py" />
         <option value="$PROJECT_DIR$/config.ini" />
         <option value="$PROJECT_DIR$/SerialCommunication.py" />
+        <option value="$PROJECT_DIR$/build_gui.py" />
+        <option value="$PROJECT_DIR$/gui.py" />
       </list>
     </option>
   </component>
@@ -163,7 +158,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -192,6 +186,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -483,9 +478,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#70#167#0" expanded="true" />
-            <element signature="e#5276#7276#0" expanded="false" />
-            <element signature="e#7307#8937#0" expanded="false" />
-            <element signature="e#8987#9286#0" expanded="false" />
+            <element signature="e#6603#8603#0" expanded="false" />
+            <element signature="e#8634#10264#0" expanded="false" />
+            <element signature="e#10314#10613#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -506,9 +501,9 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#70#167#0" expanded="true" />
-            <element signature="e#5276#7276#0" expanded="false" />
-            <element signature="e#7307#8937#0" expanded="false" />
-            <element signature="e#8987#9286#0" expanded="false" />
+            <element signature="e#6603#8603#0" expanded="false" />
+            <element signature="e#8634#10264#0" expanded="false" />
+            <element signature="e#10314#10613#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -536,9 +531,9 @@
           <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding>
             <element signature="e#70#167#0" expanded="true" />
-            <element signature="e#5276#7276#0" expanded="false" />
-            <element signature="e#7307#8937#0" expanded="false" />
-            <element signature="e#8987#9286#0" expanded="false" />
+            <element signature="e#6603#8603#0" expanded="false" />
+            <element signature="e#8634#10264#0" expanded="false" />
+            <element signature="e#10314#10613#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -559,9 +554,9 @@
           <caret line="302" column="34" lean-forward="false" selection-start-line="302" selection-start-column="34" selection-end-line="302" selection-end-column="34" />
           <folding>
             <element signature="e#70#167#0" expanded="true" />
-            <element signature="e#5276#7276#0" expanded="false" />
-            <element signature="e#7307#8937#0" expanded="false" />
-            <element signature="e#8987#9286#0" expanded="false" />
+            <element signature="e#6603#8603#0" expanded="false" />
+            <element signature="e#8634#10264#0" expanded="false" />
+            <element signature="e#10314#10613#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -834,20 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/serial/serialutil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1150">
-          <caret line="239" column="0" lean-forward="false" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/serial/serialwin32.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1330">
-          <caret line="63" column="12" lean-forward="true" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/site-packages/future/types/newstr.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2394">
@@ -859,30 +840,45 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
           <caret line="2518" column="0" lean-forward="false" selection-start-line="2518" selection-start-column="0" selection-end-line="2518" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="25" lean-forward="false" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/serial/serialutil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="239" column="0" lean-forward="false" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build_gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        <state relative-caret-position="162">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.ini">
+    <entry file="file://C:/Python27/Lib/site-packages/serial/serialwin32.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="179">
+          <caret line="311" column="0" lean-forward="false" selection-start-line="311" selection-start-column="0" selection-end-line="311" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SerialCommunication.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-324">
-          <caret line="164" column="31" lean-forward="true" selection-start-line="164" selection-start-column="8" selection-end-line="164" selection-end-column="31" />
+        <state relative-caret-position="197">
+          <caret line="110" column="46" lean-forward="false" selection-start-line="110" selection-start-column="14" selection-end-line="110" selection-end-column="46" />
           <folding>
             <element signature="e#74#87#0" expanded="true" />
           </folding>
@@ -891,13 +887,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="131" column="0" lean-forward="false" selection-start-line="131" selection-start-column="0" selection-end-line="134" selection-end-column="76" />
+        <state relative-caret-position="133">
+          <caret line="135" column="64" lean-forward="true" selection-start-line="135" selection-start-column="64" selection-end-line="135" selection-end-column="64" />
           <folding>
             <element signature="e#70#167#0" expanded="true" />
-            <element signature="e#5276#7276#0" expanded="false" />
-            <element signature="e#7307#8937#0" expanded="false" />
-            <element signature="e#8987#9286#0" expanded="false" />
+            <element signature="e#6603#8603#0" expanded="false" />
+            <element signature="e#8634#10264#0" expanded="false" />
+            <element signature="e#10314#10613#0" expanded="false" />
           </folding>
         </state>
       </provider>

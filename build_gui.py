@@ -5,6 +5,6 @@ sys.argv.append('py2exe')
 
 setup(
     options={'py2exe': {'bundle_files': 3, "optimize": 2}},
-    console=[{'script': "gui.py"}],
+    windows=[{'script': "gui.py"}],
     zipfile=None,
 )
