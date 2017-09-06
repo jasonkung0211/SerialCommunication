@@ -8,6 +8,27 @@ import sys
 import glob
 import os
 import ConfigParser
+#from flask import Flask, render_template, Response
+
+#host = Flask(__name__)
+
+
+#@host.route('/')
+#def index():
+#    return render_template('index.html')
+
+
+#def gen(quality, ser, rs232):
+#    while True:
+#        frame = get_frame(quality, ser, rs232)
+#        yield (b'--frame\r\n'
+#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+#@host.route('/video_feed')
+#def video_feed():
+#    return Response(gen("", serConnector, c.isRs232),
+#                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 class Config:
@@ -123,6 +144,39 @@ def sendComm(command, ser):
     return out
 
 
+def get_frame(quality, ser, rs232):
+    if '' == quality:
+        quality = 'image85'
+    ser.write(quality.encode('ascii') + '\r\n')
+    buf = ""
+    starting = -1
+    while True:
+        if rs232:
+            tmp = ser.read(8192)
+        else:
+            tmp = ser.read_all()
+        if len(tmp) == 0:
+            continue
+
+        if tmp.find('<<start>>') != -1:
+            if rs232:
+                starting = buf.find('<<start>>') + 10
+            else:
+                starting = buf.find('<<start>>') + 18
+            buf = tmp[starting:]
+            continue
+
+        if tmp.find('<<EOF>>') != -1:
+            buf += tmp[:tmp.find('<<EOF>>')]
+            break
+
+        if starting != -1:
+            buf += tmp
+
+    ser.flushInput()
+    return buf
+
+
 def getImage(quality, ser, rs232):
     if '' == quality:
         quality = 'image85'
@@ -236,11 +290,12 @@ if __name__ == "__main__":
     serConnector = connect(c)
 
     Has_response = handshake(serConnector)
-
     if Has_response:
         setDefault(c, serConnector)
 
+
     while Has_response:
+        #host.run(host='0.0.0.0', port=8000, debug=False)
         cmd = raw_input("Enter command or 'exit': \b")        # for Python 3
         # cmd = input("Enter command or 'exit':")             # for Python 2
         if cmd == 'exit':

@@ -35,7 +35,7 @@ class CoreGUI(object):
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("Z5212 Debug Client by 2017 ZEBEX, Inc. Version 1.1")
+        parent.title("Z5212 Debug Client by 2017 ZEBEX, Inc. Version 1.2")
         resize_and_center(parent, 900, 480)
 
         self.conn_status = StringVar()
@@ -63,14 +63,20 @@ class CoreGUI(object):
                                 **self.style.Label
                                ).pack(side="left", padx=5, pady=5)
 
-        Button(self.conn_frame, text='連線', command=self.conn, **self.style.SettingButton).pack(side="left",
-                                                                                                        padx=5, pady=5)
+        Button(self.conn_frame, text='連線', command=self.conn, **self.style.SettingButton)\
+            .pack(side="left", padx=5, pady=5)
+
+        Button(self.conn_frame, text="重新開始", command=self.reopen, **self.style.SettingButton)\
+            .pack(side="left", padx=5, pady=5)
+
         self.ports_Combobox = Combobox(self.conn_frame, values=serial_ports(), width=8)
         # assign function to combobox
         self.ports_Combobox.bind('<<ComboboxSelected>>', self.port_on_select)
+        self.ports_Combobox.current(portindex)
 
         self.baud_rate_Combo = Combobox(self.conn_frame, values=[115200, 921600], width=8)
         self.baud_rate_Combo.bind('<<ComboboxSelected>>', self.baud_rate_on_select)
+        self.baud_rate_Combo.current(baudindex)
 
         self.enter_exit_button = Button(self.conn_frame,
                                         text="回復預設值",
@@ -81,6 +87,7 @@ class CoreGUI(object):
         self.ports_Combobox.pack(side="left", padx=5, pady=5)
         self.baud_rate_Combo.pack(side="left", padx=5, pady=5)
         self.enter_exit_button.pack(side="left", padx=5, pady=5)
+
 
         ###
         # Image Frame Widgets get image, set quality
@@ -119,7 +126,7 @@ class CoreGUI(object):
         Has_response = handshake(self.serConnector)
         if Has_response:
             setDefault(c, self.serConnector)
-            self.conn_status.set('連線中')
+            self.conn_status.set('已連線')
             commGUI(self.right_frame, c.Gain, self.serConnector, "Gain")
             commGUI(self.right_frame, c.Shutter, self.serConnector, "Shutter")
             commGUI(self.right_frame, c.light, self.serConnector, "light")
@@ -134,6 +141,16 @@ class CoreGUI(object):
 
     def quit(self):
         self.serConnector.write("quit".encode('ascii') + '\r\n')
+
+    def reopen(self):
+        portindex = self.ports_Combobox.getint
+        baudindex = self.baud_rate_Combo.getint
+        try:
+            self.serConnector.close()
+        except AttributeError:
+            pass
+        self.mw.destroy()
+        app = CoreGUI()
 
     def getimg(self):
         self.canvas.delete("all")
@@ -317,6 +334,8 @@ def resize_and_center(win, width, height):
 
 if __name__ == "__main__":
     c = Config('')
+    portindex = 0
+    baudindex = 0
     # c.isRs232 = int(c.baud) - 115200 <= 0
     # c.dump()
     serConnector = None
