@@ -35,7 +35,7 @@ class CoreGUI(object):
         self.setup(self.mw)
 
     def setup(self, parent):
-        parent.title("Z5212 Debug Client by 2017 ZEBEX, Inc. Version 1.2")
+        parent.title("Z5212 Debug Client by 2017 ZEBEX, Inc. Version 1.3")
         resize_and_center(parent, 900, 480)
 
         self.conn_status = StringVar()
@@ -69,12 +69,12 @@ class CoreGUI(object):
         Button(self.conn_frame, text="重新開始", command=self.reopen, **self.style.SettingButton)\
             .pack(side="left", padx=5, pady=5)
 
-        self.ports_Combobox = Combobox(self.conn_frame, values=serial_ports(), width=8)
+        self.ports_Combobox = Combobox(self.conn_frame, values=c.port, width=8)
         # assign function to combobox
         self.ports_Combobox.bind('<<ComboboxSelected>>', self.port_on_select)
         self.ports_Combobox.current(portindex)
 
-        self.baud_rate_Combo = Combobox(self.conn_frame, values=[115200, 921600], width=8)
+        self.baud_rate_Combo = Combobox(self.conn_frame, values=c.baud, width=8)
         self.baud_rate_Combo.bind('<<ComboboxSelected>>', self.baud_rate_on_select)
         self.baud_rate_Combo.current(baudindex)
 
