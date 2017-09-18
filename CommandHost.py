@@ -5,23 +5,23 @@
 import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
 from ttk import Scrollbar
+from SerialCommunication import *
+import threading
+import sys
 
-
-class ChatClient(object):
+class CMDHost(object):
     def __init__(self):
         # Styles
         self.style = MainWindowStyles()
-
+        self.mw = Tk()
         self.setup()
 
     def setup(self):
-        self.mw = Tk()
-        self.mw.title("Python CyanChat Client")
-        resize_and_center(self.mw, 640, 480)
+        self.mw.title("Python Z-5212 Command Host " + c.port + ", " + c.baud)
+        resize_and_center(self.mw, 800, 600)
 
         # Variables
-        self.nickname = StringVar(self.mw, "Kirsle")
-        self.message = StringVar(self.mw, "--disabled--")
+        self.cmd_message = StringVar(self.mw, "--empty--")
 
         # Top Frame (name entry box, buttons, conn status)
         self.login_frame = Frame(self.mw, **self.style.Frame)
@@ -30,13 +30,12 @@ class ChatClient(object):
         self.lower_frame.pack(side="top", fill="both", expand=1)
 
         # The lower left (message entry, chat history) and lower right
-        # (who lists)
         self.left_frame = Frame(self.lower_frame, **self.style.Frame)
         self.right_frame = Frame(self.lower_frame, **self.style.Frame)
         self.right_frame.pack(side="right", fill="y")
         self.left_frame.pack(side="right", fill="both", expand=1)
 
-        # The message entry & chat history frames
+        # The cmd entry & history frames
         self.message_frame = Frame(self.left_frame, **self.style.Frame)
         self.dialogue_frame = Frame(self.left_frame, **self.style.Frame)
         self.message_frame.pack(side="top", fill="x")
@@ -45,35 +44,26 @@ class ChatClient(object):
         ###
         # Top Frame Widgets
         ###
+        self.enter_Connecte_button = Button(self.login_frame,
+                                            text="Connected to Z5212",
+                                            command=self.conn,
+                                            **self.style.Button
+                                            )
+        self.enter_Connecte_button.pack(side="left", padx=5, pady=5)
 
-        self.name_label = Label(self.login_frame,
-                                text="Name:",
-                                **self.style.Label
-                                )
-        self.name_entry = Entry(self.login_frame,
-                                textvariable=self.nickname,
-                                width=20,
-                                **self.style.DarkEntry
-                                )
-        self.enter_exit_button = Button(self.login_frame,
-                                        text="Enter chat",
-                                        **self.style.Button
-                                        )
-        self.status_label = Label(self.login_frame,
-                                  text="Connected to CyanChat",
-                                  **self.style.ConnectedLabel
-                                  )
-        self.name_label.pack(side="left", padx=5, pady=5)
-        self.name_entry.pack(side="left", pady=5)
-        self.enter_exit_button.pack(side="left", padx=5, pady=5)
-        self.status_label.pack(side="left")
+        self.enter_Connecte_button = Button(self.login_frame,
+                                            text="Send CMD",
+                                            command=self.send,
+                                            **self.style.Button
+                                            )
+        self.enter_Connecte_button.pack(side="right", padx=5, pady=5)
 
         ###
         # Message Frame Widgets
         ###
 
         self.message_entry = Entry(self.message_frame,
-                                   textvariable=self.message,
+                                   textvariable=self.cmd_message,
                                    state="disabled",
                                    **self.style.Entry
                                    )
@@ -86,24 +76,61 @@ class ChatClient(object):
         )
 
         ###
-        # Who Frame Widgets
+        # commandlist Frame Widgets
         ###
 
-        self.who_label = Label(self.right_frame,
-                               text="Who is online:",
-                               anchor="w",
-                               **self.style.Label
-                               )
-        self.who_label.pack(side="top", fill="x")
+        self.commandlist_label = Label(self.right_frame,
+                                       text="SSI Command List",
+                                       anchor="w",
+                                       **self.style.Label
+                                       )
+        self.commandlist_label.pack(side="top", fill="x")
 
-        self.who_list = Scrolled(self.right_frame, Listbox,
-                                 attributes=self.style.Listbox,
-                                 scrollbar=self.style.Scrollbar,
-                                 )
-        self.who_list.pack(side="top", fill="both", expand=1)
+        self.commandlist = Scrolled(self.right_frame, Listbox,
+                                    attributes=self.style.Listbox,
+                                    scrollbar=self.style.Scrollbar,
+                                    )
+        self.commandlist.pack(side="top", fill="both", expand=1)
 
-        for i in range(200):
-            self.who_list.widget.insert(END, "Anonymous{}".format(i))
+        # Add command
+        self.commandlist.widget.insert(END, "0x10 FLUSH_MACRO_PDF")
+        self.commandlist.widget.insert(END, "0x11 ABORT_MACRO_PDF")
+        self.commandlist.widget.insert(END, "0x12 CUSTOM_DEFAULTS")
+        self.commandlist.widget.insert(END, "0x80 SSI_MGMT_COMMAND")
+        self.commandlist.widget.insert(END, "0xA3 REQUEST_REVISION")
+        self.commandlist.widget.insert(END, "0xA4 REPLY_REVISION")
+        self.commandlist.widget.insert(END, "0xB0 Reserved")
+        self.commandlist.widget.insert(END, "0xB1 IMAGE_DATA")
+        self.commandlist.widget.insert(END, "0xB4 VIDEO_DATA")
+        self.commandlist.widget.insert(END, "0xC0 ILLUMINATION_OFF")
+        self.commandlist.widget.insert(END, "0xC1 ILLUMINATION_ON")
+        self.commandlist.widget.insert(END, "0xC4 AIM_OFF")
+        self.commandlist.widget.insert(END, "0xC5 AIM_ON")
+        self.commandlist.widget.insert(END, "0xC6 PARAM_SEND")
+        self.commandlist.widget.insert(END, "0xC7 PARAM_REQUEST")
+        self.commandlist.widget.insert(END, "0xC8 PARAM_DEFAULTS")
+        self.commandlist.widget.insert(END, "0xC9 CHANGE_ALL_CODE_TYPES")
+        self.commandlist.widget.insert(END, "0xCA PAGER_MOTOR_ACTIVATION")
+        self.commandlist.widget.insert(END, "0xD0 CMD_ACK")
+        self.commandlist.widget.insert(END, "0xD1 CMD_NAK")
+        self.commandlist.widget.insert(END, "0xD2 FLUSH_QUEUE")
+        self.commandlist.widget.insert(END, "0xD3 CAPABILITIES_REQUEST")
+        self.commandlist.widget.insert(END, "0xD4 CAPABILITIES_REPLY")
+        self.commandlist.widget.insert(END, "0xD5 BATCH_REQUEST")
+        self.commandlist.widget.insert(END, "0xD6 BATCH_DATA")
+        self.commandlist.widget.insert(END, "0xD8 CMD_ACK_ACTION")
+        self.commandlist.widget.insert(END, "0xE4 START_SESSION")
+        self.commandlist.widget.insert(END, "0xE5 STOP_SESSION")
+        self.commandlist.widget.insert(END, "0xE6 BEEP")
+        self.commandlist.widget.insert(END, "0xE7 LED_ON")
+        self.commandlist.widget.insert(END, "0xE8 LED_OFF")
+        self.commandlist.widget.insert(END, "0xE9 SCAN_ENABLE")
+        self.commandlist.widget.insert(END, "0xEA SCAN_DISABLE")
+        self.commandlist.widget.insert(END, "0xEB SLEEP")
+        self.commandlist.widget.insert(END, "0xF3 DECODE_DATA")
+        self.commandlist.widget.insert(END, "0xF6 EVENT")
+        self.commandlist.widget.insert(END, "0xF7 IMAGER_MODE")
+        self.commandlist.widget.insert(END, "N/A WAKEUP")
 
         ###
         # Dialogue Frame Widgets
@@ -140,7 +167,8 @@ class ChatClient(object):
                 self.insert_readonly(self.dialogue_text, 0.0, *part)
                 # self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
 
-    def chat_styles(self, widget):
+    @staticmethod
+    def chat_styles(widget):
         """Configure chat text styles."""
         # User colors
         widget.tag_configure("user", foreground="#FFFFFF")
@@ -158,24 +186,24 @@ class ChatClient(object):
     def start(self):
         self.mw.mainloop()
 
+    def conn(self):
+        self.serConnector = connect(c)
+        if self.serConnector.is_open:
+            pass
+
+    def send(self):
+        pass
+
 
 class MainWindowStyles(object):
     """Simple Python class to hold style-related configurations for widgets."""
-    Frame = dict(
-        bg="#000000",
-    )
+    Frame = dict(bg="#3C3F41",)
 
-    BaseLabel = dict(
-        font="Verdana 8",
-    )
+    BaseLabel = dict(font="Helvetica 12 bold", )
+
     Label = dict(
-        bg="#000000",
-        fg="#CCCCCC",
-        **BaseLabel
-    )
-    ConnectedLabel = dict(
-        bg="#000000",
-        fg="#00FF00",
+        bg="#45494A",
+        fg="#CCDDDD",
         **BaseLabel
     )
 
@@ -183,11 +211,16 @@ class MainWindowStyles(object):
         highlightthickness=0,  # Removes stupid border around the widget
     )
 
+    ListFormCtrl = dict(
+        width=30,
+        highlightthickness=0,  # Removes stupid border around the widget
+    )
+
     BaseEntry = dict(
         insertwidth=1,
         selectborderwidth=0,
         selectbackground="#0099FF",
-        font="Verdana 8",
+        font="Helvetica 12",
         **BaseFormCtrl
     )
     Entry = dict(
@@ -199,20 +232,20 @@ class MainWindowStyles(object):
         **BaseEntry
     )
     DarkEntry = dict(
-        bg="#000000",
+        bg="#2B2B2B",
         fg="#CCCCCC",
         insertbackground="#FFFFFF",  # Text insertion blinking cursor
         **BaseEntry
     )
 
     Listbox = dict(
-        bg="#000000",
+        bg="#2B2B2B",
         fg="#CCCCCC",
-        **BaseFormCtrl
+        **ListFormCtrl
     )
 
     Dialogue = dict(
-        bg="#000000",
+        bg="#2B2B2B",
         fg="#CCCCCC",
         # disabledbackground="#000000",
         # disabledforeground="#CCCCCC",
@@ -305,5 +338,6 @@ def resize_and_center(win, width, height):
 
 
 if __name__ == "__main__":
-    app = ChatClient()
+    c = Config('')
+    app = CMDHost()
     app.start()
