@@ -8,27 +8,27 @@ import sys
 import glob
 import os
 import ConfigParser
-#from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response
 
-#host = Flask(__name__)
-
-
-#@host.route('/')
-#def index():
-#    return render_template('index.html')
+host = Flask(__name__)
 
 
-#def gen(quality, ser, rs232):
-#    while True:
-#        frame = get_frame(quality, ser, rs232)
-#        yield (b'--frame\r\n'
-#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+@host.route('/')
+def index():
+    return render_template('index.html')
 
 
-#@host.route('/video_feed')
-#def video_feed():
-#    return Response(gen("", serConnector, c.isRs232),
-#                    mimetype='multipart/x-mixed-replace; boundary=frame')
+def gen(quality, ser, rs232):
+    while True:
+        frame = get_frame(quality, ser, rs232)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+@host.route('/video_feed')
+def video_feed():
+    return Response(gen("", serConnector, c.isRs232),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 class Config:
@@ -146,7 +146,7 @@ def sendComm(command, ser):
 
 def get_frame(quality, ser, rs232):
     if '' == quality:
-        quality = 'image85'
+        quality = 'image100'
     ser.write(quality.encode('ascii') + '\r\n')
     buf = ""
     starting = -1
@@ -295,7 +295,7 @@ if __name__ == "__main__":
 
 
     while Has_response:
-        #host.run(host='0.0.0.0', port=8000, debug=False)
+        host.run(host='127.0.0.1', port=8000, debug=False)
         cmd = raw_input("Enter command or 'exit': \b")        # for Python 3
         # cmd = input("Enter command or 'exit':")             # for Python 2
         if cmd == 'exit':
