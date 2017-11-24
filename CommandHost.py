@@ -6,8 +6,7 @@ import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
 from ttk import Scrollbar
 from SerialCommunication import *
-import threading
-import sys
+from PIL import ImageTk, Image
 
 class CMDHost(object):
     def __init__(self):
@@ -36,16 +35,17 @@ class CMDHost(object):
         self.left_frame.pack(side="right", fill="both", expand=1)
 
         # The cmd entry & history frames
-        self.message_frame = Frame(self.left_frame, **self.style.Frame)
+        self.message_frame = Frame(self.login_frame, **self.style.Frame)
         self.dialogue_frame = Frame(self.left_frame, **self.style.Frame)
         self.message_frame.pack(side="top", fill="x")
         self.dialogue_frame.pack(side="top", fill="both", expand=1)
+
 
         ###
         # Top Frame Widgets
         ###
         self.enter_Connecte_button = Button(self.login_frame,
-                                            text="Connected to Z5212",
+                                            text="Connect",
                                             command=self.conn,
                                             **self.style.Button
                                             )
@@ -145,27 +145,22 @@ class CMDHost(object):
 
         # Dummy junk
         messages = [
-            [["[Kirsle]", "user"], [" Hello room!"]],
-            [["\\\\\\\\\\", "server"], ["[Kirsle]", "user"], [" <links in from comcast.net Age>"], ["/////", "server"]],
-            [["[ChatServer] ", "server"], ["Welcome to the Cyan Chat room."]],
-            [["[ChatServer] ", "server"], ["There are only a few rules:"]],
-            [["[ChatServer] ", "server"], ["   Be respectful and sensitive to others"]],
-            [["[ChatServer] ", "server"], ["   And HAVE FUN!"]],
-            [["[ChatServer] ", "server"], [""]],
-            [["[ChatServer] ", "server"], ["Termination of use can happen without warning!"]],
-            [["[ChatServer] ", "server"], [""]],
-            [["[ChatServer] ", "server"], ["Server commands now available, type !\\? at the beginning of a line."]],
-            [["[ChatServer] ", "server"], ["CyanChat Server version 2.12d"]],
+            [["[JK] ", "Host"], ["Welcome to the JK SSI tool."]],
+            [["[JK] ", "Host"], ["There are only a few rules:"]],
+            [["[JK] ", "Host"], ["   Be respectful and sensitive to me"]],
+            [["[JK] ", "Host"], ["   And HAVE FUN!"]],
+            [["[JK] ", "Host"], [""]],
+            [["[JK] ", "Host"], ["Termination of use can happen without warning!"]],
+            [["[JK] ", "Host"], [""]],
+            [["[JK] ", "Host"], ["JK SSI Tool version v0.01"]],
         ]
-        for i in range(80):
-            messages.append([["[ChatClient]", "client"], [" Connecting..."]])
-        messages.reverse()
+
         for line in messages:
             self.insert_readonly(self.dialogue_text, 0.0, "\n")
             line.reverse()
             for part in line:
                 self.insert_readonly(self.dialogue_text, 0.0, *part)
-                # self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
+                #self.insert_readonly(self.dialogue_text, END, "[Admin]", "admin")
 
     @staticmethod
     def chat_styles(widget):
