@@ -4,7 +4,7 @@
 
 import Tkinter as tk
 from Tkinter import Tk, StringVar, Frame, Label, Text, Entry, Button, Listbox, END
-from ttk import Scrollbar
+from ttk import Scrollbar, Combobox
 from SerialCommunication import *
 from PIL import ImageTk, Image
 
@@ -21,6 +21,7 @@ class CMDHost(object):
 
         # Variables
         self.cmd_message = StringVar(self.mw, "--empty--")
+        self.conn_status = StringVar(self.mw, '...')
 
         # Top Frame (name entry box, buttons, conn status)
         self.login_frame = Frame(self.mw, **self.style.Frame)
@@ -51,12 +52,26 @@ class CMDHost(object):
                                             )
         self.enter_Connecte_button.pack(side="left", padx=5, pady=5)
 
+        self.status_label = Label(self.login_frame,
+                                textvariable=self.conn_status,
+                                **self.style.Label).pack(side="left", padx=5, pady=5)
+
         self.enter_Connecte_button = Button(self.login_frame,
                                             text="Send CMD",
                                             command=self.send,
                                             **self.style.Button
-                                            )
-        self.enter_Connecte_button.pack(side="right", padx=5, pady=5)
+                                            ).pack(side="right", padx=5, pady=5)
+
+        self.ports_Combobox = Combobox(self.login_frame, values=c.port, width=8)
+        # assign function to combobox
+        self.ports_Combobox.bind('<<ComboboxSelected>>', self.port_on_select)
+        self.ports_Combobox.current(portindex)
+        self.ports_Combobox.pack(side="left", padx=5, pady=5)
+
+        self.baud_rate_Combo = Combobox(self.login_frame, values=c.baud, width=8)
+        self.baud_rate_Combo.bind('<<ComboboxSelected>>', self.baud_rate_on_select)
+        self.baud_rate_Combo.current(baudindex)
+        self.baud_rate_Combo.pack(side="left", padx=5, pady=5)
 
         ###
         # Message Frame Widgets
@@ -181,13 +196,27 @@ class CMDHost(object):
     def start(self):
         self.mw.mainloop()
 
+    def exit(self):
+        self.serConnector.close()
+
+
     def conn(self):
         self.serConnector = connect(c)
-        if self.serConnector.is_open:
-            pass
+        serConnector = self.serConnector
+        if serConnector.is_open:
+            self.conn_status.set('Open')
+        else:
+            self.conn_status.set('Connect fail')
 
     def send(self):
-        pass
+        value = self.commandlist.getSelectedIndex()
+        print(self.commandlist.get(value))
+
+    def baud_rate_on_select(self, event=None):
+        print("event.widget:", event.widget.get())
+
+    def port_on_select(self, event=None):
+        print("event.widget:", event.widget.get())
 
 
 class MainWindowStyles(object):
@@ -314,6 +343,12 @@ class Scrolled(object):
         """Get at the scrollbar widget."""
         return self.scrollbar
 
+    def getSelectedIndex(self):
+        return self.widget.curselection()
+
+    def get(self, index):
+        return str((self.widget.get(index)))
+
     def pack(self, **kwargs):
         """Wrapper so that pack() works as you'd expect."""
         self.frame.pack(**kwargs)
@@ -334,5 +369,8 @@ def resize_and_center(win, width, height):
 
 if __name__ == "__main__":
     c = Config('')
+    portindex = 0
+    baudindex = 0
+    serConnector = None
     app = CMDHost()
     app.start()
